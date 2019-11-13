@@ -1,2 +1,2 @@
-filecontroller:
-  uploadDirectory: "/home/dub/upload/"
+messaging:
+  queue: "fileSend"

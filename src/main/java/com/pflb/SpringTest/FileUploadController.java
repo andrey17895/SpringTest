@@ -2,6 +2,7 @@ package com.pflb.SpringTest;
 
 import com.pflb.SpringTest.data.entities.HistoryFile;
 import com.pflb.SpringTest.data.repositories.HistoryFileRepository;
+import com.pflb.SpringTest.messaging.MessagingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,6 +17,9 @@ public class FileUploadController {
     @Autowired
     private HistoryFileRepository historyFileRepository;
 
+    @Autowired
+    private MessagingService messagingService;
+
     @PostMapping(value = "/uploadFile")
     @ResponseBody
     public String uploadFile(@RequestParam(value = "file")MultipartFile file) throws IOException {
@@ -28,6 +32,7 @@ public class FileUploadController {
                 .uploadTime(new Date())
                 .build();
         historyFileRepository.save(historyFile);
+        messagingService.sendMessage(historyFile.getContent());
         return historyFile.toString();
     }
 
