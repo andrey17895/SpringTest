@@ -1,17 +1,15 @@
-package com.pflb.SpringTest.messaging;
+package com.pflb.SpringTest.messaging.sender;
 
-import com.pflb.SpringTest.parser.HarParserService;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 
 @Service
 @ConfigurationProperties(prefix = "messaging")
-public class RabbitMessagingSender implements MessagingService{
+public class RabbitMessagingSender implements MessagingSender {
 
     @Autowired
     private RabbitTemplate rabbitTemplate;

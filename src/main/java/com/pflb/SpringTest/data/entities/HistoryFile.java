@@ -1,7 +1,7 @@
 package com.pflb.SpringTest.data.entities;
 
-import lombok.Builder;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,7 +11,7 @@ import java.util.Date;
 
 @Data
 @Entity
-@Builder
+@RequiredArgsConstructor
 public class HistoryFile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

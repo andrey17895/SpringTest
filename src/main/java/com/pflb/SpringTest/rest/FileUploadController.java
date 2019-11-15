@@ -1,13 +1,17 @@
-package com.pflb.SpringTest;
+package com.pflb.SpringTest.rest;
 
 import com.pflb.SpringTest.data.entities.HistoryFile;
 import com.pflb.SpringTest.data.repositories.HistoryFileRepository;
-import com.pflb.SpringTest.messaging.MessagingService;
+import com.pflb.SpringTest.messaging.sender.MessagingSender;
+import com.pflb.SpringTest.parser.HarParserService;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Date;
 import java.util.stream.Collectors;
 
@@ -15,24 +19,26 @@ import java.util.stream.Collectors;
 public class FileUploadController {
 
     @Autowired
+    private HarParserService harParserService;
+
+    @Autowired
     private HistoryFileRepository historyFileRepository;
 
     @Autowired
-    private MessagingService messagingService;
+    private MessagingSender messagingSender;
 
     @PostMapping(value = "/uploadFile")
     @ResponseBody
-    public String uploadFile(@RequestParam(value = "file")MultipartFile file) throws IOException {
+    public String uploadFile(@NotNull @RequestParam(value = "file")MultipartFile file) throws IOException {
         String originalFilename = file.getOriginalFilename();
         InputStreamReader streamReader = new InputStreamReader(file.getInputStream());
         String fileContent = new BufferedReader(streamReader).lines().collect(Collectors.joining());
-        HistoryFile historyFile = HistoryFile.builder()
-                .content(fileContent)
-                .name(file.getName())
-                .uploadTime(new Date())
-                .build();
+        HistoryFile historyFile = new HistoryFile();
+        historyFile.setContent(fileContent);
+        historyFile.setName(file.getName());
+        historyFile.setUploadTime(new Date());
         historyFileRepository.save(historyFile);
-        messagingService.sendMessage(historyFile.getContent());
+        messagingSender.sendMessage(historyFile.getContent());
         return historyFile.toString();
     }
 
