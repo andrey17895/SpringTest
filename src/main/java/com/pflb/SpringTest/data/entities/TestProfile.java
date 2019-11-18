@@ -1,22 +1,24 @@
 package com.pflb.SpringTest.data.entities;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.List;
 
 @Data
-//@Entity
+@Entity
+@RequiredArgsConstructor
+@NoArgsConstructor
 public class TestProfile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-//    @ElementCollection
-//    @CollectionTable(name = "test_profile_requests", joinColumns = @JoinColumn(name = "test_profile_id"))
-    @OneToMany(mappedBy = "test_profile")
+
+    @NonNull
+    @OneToMany(mappedBy = "testProfile", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Request> requests;
 
 }

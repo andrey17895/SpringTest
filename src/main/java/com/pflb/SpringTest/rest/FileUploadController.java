@@ -30,7 +30,6 @@ public class FileUploadController {
     @PostMapping(value = "/uploadFile")
     @ResponseBody
     public String uploadFile(@NotNull @RequestParam(value = "file")MultipartFile file) throws IOException {
-        String originalFilename = file.getOriginalFilename();
         InputStreamReader streamReader = new InputStreamReader(file.getInputStream());
         String fileContent = new BufferedReader(streamReader).lines().collect(Collectors.joining());
         HistoryFile historyFile = new HistoryFile();
