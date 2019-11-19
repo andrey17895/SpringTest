@@ -1,13 +1,9 @@
 package com.pflb.SpringTest.data.entities;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.pflb.SpringTest.parser.deserializers.CustomBodyDeserializer;
-import com.pflb.SpringTest.parser.deserializers.CustomParamsDeserialiser;
-import com.pflb.SpringTest.parser.deserializers.ListToMapDeserializer;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import org.springframework.http.HttpMethod;
 
 import javax.persistence.*;
@@ -16,6 +12,7 @@ import java.util.Map;
 @Data
 @Entity
 @RequiredArgsConstructor
+@ToString(exclude = {"testProfile"})
 public class Request {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,11 +20,11 @@ public class Request {
 
     private String url;
 
-    @JsonAlias({"postData"})
-    @JsonDeserialize(using = CustomBodyDeserializer.class)
+//    @JsonAlias({"postData"})
+//    @JsonDeserialize(using = CustomBodyDeserializer.class)
     private String body;
 
-    @JsonDeserialize(using = ListToMapDeserializer.class)
+//    @JsonDeserialize(using = ListToMapDeserializer.class)
     @ElementCollection
     @CollectionTable(name = "request_headers",
             joinColumns = {@JoinColumn(name = "request_id", referencedColumnName = "id")})
@@ -35,8 +32,8 @@ public class Request {
     @Column(name = "value")
     private Map<String, String> headers;
 
-    @JsonAlias({"postData"})
-    @JsonDeserialize(using = CustomParamsDeserialiser.class)
+//    @JsonAlias({"postData"})
+//    @JsonDeserialize(using = CustomParamsDeserialiser.class)
     @ElementCollection
     @CollectionTable(name = "request_params",
             joinColumns = {@JoinColumn(name = "request_id", referencedColumnName = "id")})
@@ -46,7 +43,7 @@ public class Request {
 
     private HttpMethod method;
 
-    private Double perc;
+    private Double perc = 0D;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "test_profile_id", nullable = false)
