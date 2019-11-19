@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.pflb.SpringTest.parser.deserializers.CustomBodyDeserializer;
+import com.pflb.SpringTest.parser.deserializers.CustomParamsDeserialiser;
 import com.pflb.SpringTest.parser.deserializers.ListToMapDeserializer;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +35,8 @@ public class Request {
     @Column(name = "value")
     private Map<String, String> headers;
 
-    @JsonDeserialize(using = ListToMapDeserializer.class)
+    @JsonAlias({"postData"})
+    @JsonDeserialize(using = CustomParamsDeserialiser.class)
     @ElementCollection
     @CollectionTable(name = "request_params",
             joinColumns = {@JoinColumn(name = "request_id", referencedColumnName = "id")})
