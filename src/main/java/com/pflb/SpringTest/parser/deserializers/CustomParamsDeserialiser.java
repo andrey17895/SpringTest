@@ -5,29 +5,30 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ListToMapDeserializer extends StdDeserializer<Map<String, String>> {
+public class CustomParamsDeserialiser extends StdDeserializer<Map<String, String>> {
+    public CustomParamsDeserialiser() { this(null); }
 
-    public ListToMapDeserializer() { this(null); }
-
-    public ListToMapDeserializer(Class<?> vc) {
+    public CustomParamsDeserialiser(Class<?> vc) {
         super(vc);
     }
 
     @Override
     public Map<String, String> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
-        ArrayNode node = jsonParser.getCodec().readTree(jsonParser);
+        JsonNode node = jsonParser.getCodec().readTree(jsonParser);
         Map<String, String> result = new HashMap<>();
-        for (JsonNode parm: node) {
-            if (parm.has("name") && parm.has("value")) {
-                String key = parm.get("name").asText();
-                String value = parm.get("value").asText();
-                result.put(key, value);
+        if (node.has("params")) {
+            JsonNode arrayNode = node.get("params");
+            for (JsonNode parm : arrayNode) {
+                if (parm.has("name") && parm.has("value")) {
+                    String key = parm.get("name").asText();
+                    String value = parm.get("value").asText();
+                    result.put(key, value);
+                }
             }
         }
         return result;

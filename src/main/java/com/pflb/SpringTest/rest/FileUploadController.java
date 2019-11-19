@@ -47,4 +47,9 @@ public class FileUploadController {
         return historyFileRepository.findAll();
     }
 
+    @DeleteMapping(value = "uploadFile")
+    public void deleteAll() {
+        historyFileRepository.deleteAll();
+    }
+
 }
