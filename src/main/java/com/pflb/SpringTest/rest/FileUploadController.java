@@ -29,7 +29,7 @@ public class FileUploadController {
 
     @PostMapping(value = "/uploadFile")
     @ResponseBody
-    public String uploadFile(@NotNull @RequestParam(value = "file")MultipartFile file) throws IOException {
+    public HistoryFile uploadFile(@NotNull @RequestParam(value = "file")MultipartFile file) throws IOException {
         InputStreamReader streamReader = new InputStreamReader(file.getInputStream());
         String fileContent = new BufferedReader(streamReader).lines().collect(Collectors.joining());
         HistoryFile historyFile = new HistoryFile();
@@ -38,7 +38,7 @@ public class FileUploadController {
         historyFile.setUploadTime(new Date());
         historyFileRepository.save(historyFile);
         messagingSender.sendMessage(historyFile.getContent());
-        return historyFile.toString();
+        return historyFile;
     }
 
     @GetMapping(value = "/uploadFile")
