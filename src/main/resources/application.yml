@@ -1,2 +1,25 @@
 messaging:
   queue: "fileSend"
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: none
+      jdbc.lob.non_contextual_creation: true
+  datasource:
+    initialization-mode: always
+    platform: postgres
+    url: "jdbc:postgresql://localhost:5432/testdb"
+    username: testuser
+    password: postgres
+
+#  spring.jpa.hibernate.ddl-auto=none
+#
+#  spring.datasource.initialization-mode=always
+#  spring.datasource.platform=postgres
+#  spring.datasource.url=jdbc:postgresql://localhost:5432/testdb
+#  spring.datasource.username=testuser
+#  spring.datasource.password=postgres
+#
+#
+#  spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=true
