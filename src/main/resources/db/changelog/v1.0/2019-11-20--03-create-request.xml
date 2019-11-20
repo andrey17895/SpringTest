@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet author="dub (generated)" id="2019-11-20--03-create-request-1">
+        <createSequence sequenceName="request_id_seq"/>
+    </changeSet>
+    <changeSet author="dub (generated)" id="2019-11-20--03-create-request-2">
+        <createTable tableName="request">
+            <column autoIncrement="true" name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" primaryKeyName="request_pkey"/>
+            </column>
+            <column name="test_profile_id" type="BIGINT"/>
+            <column name="url" type="VARCHAR(2147483647)"/>
+            <column name="body" type="TEXT"/>
+            <column name="method" type="VARCHAR(10)"/>
+            <column name="perc" type="numeric(2)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="dub (generated)" id="2019-11-20--03-create-request-3">
+        <addForeignKeyConstraint baseColumnNames="test_profile_id" baseTableName="request" constraintName="request_test_profile_id_fkey" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="test_profile"/>
+    </changeSet>
+</databaseChangeLog>
