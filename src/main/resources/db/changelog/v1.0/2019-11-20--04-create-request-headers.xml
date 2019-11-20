@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet author="dub (generated)" id="2019-11-20--04-create-request-headers-1">
+        <createSequence sequenceName="request_headers_id_seq"/>
+    </changeSet>
+    <changeSet author="dub (generated)" id="2019-11-20--04-create-request-headers-2">
+        <createTable tableName="request_headers">
+            <column autoIncrement="true" name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" primaryKeyName="request_headers_pkey"/>
+            </column>
+            <column name="request_id" type="BIGINT"/>
+            <column name="name" type="VARCHAR(2147483647)"/>
+            <column name="value" type="VARCHAR(2147483647)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="dub (generated)" id="2019-11-20--04-create-request-headers-3">
+        <addForeignKeyConstraint baseColumnNames="request_id" baseTableName="request_headers" constraintName="request_headers_request_id_fkey" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="request"/>
+    </changeSet>
+</databaseChangeLog>
