@@ -1,2 +1,0 @@
-ALTER TABLE request
-    ALTER COLUMN url TYPE VARCHAR;
