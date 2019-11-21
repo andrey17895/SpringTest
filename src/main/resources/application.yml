@@ -12,6 +12,9 @@ spring:
     url: "jdbc:postgresql://localhost:5432/testdb"
     username: testuser
     password: postgres
+  liquibase:
+    changelog: "classpath:db/db.changelog-master.yaml"
+    drop-first: true
 
 #  spring.jpa.hibernate.ddl-auto=none
 #

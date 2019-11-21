@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet author="Balakirev Andrey" id="2019-11-21--01-init-schema-history-file-sequence">
+        <createSequence sequenceName="history_file_id_seq"/>
+    </changeSet>
+    <changeSet author="Balakirev Andrey" id="2019-11-21--01-init-schema-history-file-table">
+        <createTable tableName="history_file">
+            <column autoIncrement="true" name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" primaryKeyName="history_file_pkey"/>
+            </column>
+            <column name="name" type="VARCHAR(100)"/>
+            <column name="content" type="TEXT"/>
+            <column name="upload_time" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Balakirev Andrey" id="2019-11-21--01-init-schema-test-profile-sequence">
+        <createSequence sequenceName="test_profile_id_seq"/>
+    </changeSet>
+    <changeSet author="Balakirev Andrey" id="2019-11-21--01-init-schema-test-profile-table">
+        <createTable tableName="test_profile">
+            <column autoIncrement="true" name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" primaryKeyName="test_profile_pkey"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Balakirev Andrey" id="2019-11-21--01-init-schema-request-sequence">
+        <createSequence sequenceName="request_id_seq"/>
+    </changeSet>
+    <changeSet author="Balakirev Andrey" id="2019-11-21--01-init-schema-request-table">
+        <createTable tableName="request">
+            <column autoIncrement="true" name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" primaryKeyName="request_pkey"/>
+            </column>
+            <column name="test_profile_id" type="BIGINT"/>
+            <column name="url" type="VARCHAR(2147483647)"/>
+            <column name="body" type="TEXT"/>
+            <column name="method" type="VARCHAR(10)"/>
+            <column name="perc" type="numeric(2)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Balakirev Andrey" id="2019-11-21--01-init-schema-request-fk">
+        <addForeignKeyConstraint baseColumnNames="test_profile_id" baseTableName="request" constraintName="request_test_profile_id_fkey" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="test_profile"/>
+    </changeSet>
+    <changeSet author="Balakirev Andrey" id="2019-11-21--01-init-schema-request-headers-sequence">
+        <createSequence sequenceName="request_headers_id_seq"/>
+    </changeSet>
+    <changeSet author="Balakirev Andrey" id="2019-11-21--01-init-schema-request-headers-table">
+        <createTable tableName="request_headers">
+            <column autoIncrement="true" name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" primaryKeyName="request_headers_pkey"/>
+            </column>
+            <column name="request_id" type="BIGINT"/>
+            <column name="name" type="VARCHAR(2147483647)"/>
+            <column name="value" type="VARCHAR(2147483647)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Balakirev Andrey" id="2019-11-21--01-init-schema-request-headers-fk">
+        <addForeignKeyConstraint baseColumnNames="request_id" baseTableName="request_headers" constraintName="request_headers_request_id_fkey" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="request"/>
+    </changeSet>
+    <changeSet author="Balakirev Andrey" id="2019-11-21--01-init-schema-request-params-sequence">
+        <createSequence sequenceName="request_params_id_seq"/>
+    </changeSet>
+    <changeSet author="Balakirev Andrey" id="2019-11-21--01-init-schema-request-params-table">
+        <createTable tableName="request_params">
+            <column autoIncrement="true" name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" primaryKeyName="request_params_pkey"/>
+            </column>
+            <column name="request_id" type="BIGINT"/>
+            <column name="name" type="VARCHAR(2147483647)"/>
+            <column name="value" type="VARCHAR(2147483647)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Balakirev Andrey" id="2019-11-21--01-init-schema-request-params-fk">
+        <addForeignKeyConstraint baseColumnNames="request_id" baseTableName="request_params" constraintName="request_params_request_id_fkey" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="request"/>
+    </changeSet>
+</databaseChangeLog>
