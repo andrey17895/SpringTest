@@ -28,6 +28,7 @@ public class TestProfileController {
     @PostMapping(value = "/testProfile")
     @ResponseBody
     public TestProfile postTestProfile(@RequestBody TestProfile newTestProfile) {
+        newTestProfile.setId(null);
         return testProfileRepository.save(newTestProfile);
     }
 

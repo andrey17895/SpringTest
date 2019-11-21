@@ -15,7 +15,7 @@ import java.util.Date;
 public class HistoryFile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     private String name;
 
