@@ -1,0 +1,71 @@
+{
+  "log": {
+    "version": "1.2",
+    "creator": {
+      "name": "Firefox",
+      "version": "68.0.1"
+    },
+    "browser": {
+      "name": "Firefox",
+      "version": "68.0.1"
+    },
+    "pages": [
+      {
+        "startedDateTime": "2019-115-11T16:16:41.749+03:00",
+        "id": "Page_1",
+        "pageTimings": {
+          "onContentLoad": 375,
+          "onLoad": 573
+        }
+      }
+    ],
+    "entries": [
+      {
+        "pageref": "page_1",
+        "startedDateTime": "2019-11-11T16:16:41.749+03:00",
+        "request": {
+          "bodySize": 0,
+          "method": "GET",
+          "url": "https://ya.ru/",
+          "httpVersion": "HTTP/1.1",
+          "headers": [
+            {
+              "name": "Host",
+              "value": "ya.ru"
+            },
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:68.0) Gecko/20100101 Firefox/68.0"
+            }
+          ],
+          "cookies": [
+            {
+              "name": "yandexuid",
+              "value": "6570020091573478134"
+            },
+            {
+              "name": "yp",
+              "value": "1576070134.ygu.1"
+            }
+          ],
+          "queryString": [],
+          "headersSize": 650
+        },
+        "cache": {},
+        "timings": {
+          "blocked": 0,
+          "dns": 0,
+          "connect": 0,
+          "ssl": 0,
+          "send": 0,
+          "wait": 58,
+          "receive": 2
+        },
+        "time": 60,
+        "_securityState": "secure",
+        "serverIPAddress": "87.250.250.242",
+        "connection": "443"
+      }
+    ]
+  }
+}

@@ -1,9 +1,6 @@
 package com.pflb.springtest.model.dto.har;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 import java.util.Map;
@@ -12,6 +9,7 @@ import java.util.stream.Collectors;
 @Data
 @RequiredArgsConstructor
 @NoArgsConstructor
+@Builder
 public class HarPostDataDto {
 
     @NonNull

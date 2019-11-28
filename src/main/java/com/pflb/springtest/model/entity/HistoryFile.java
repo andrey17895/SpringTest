@@ -7,13 +7,14 @@ import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
 @RequiredArgsConstructor
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "history_file")
 @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 public class HistoryFile {
@@ -33,5 +34,5 @@ public class HistoryFile {
     private String version;
 
     @NonNull
-    private Date uploadTime;
+    private LocalDateTime uploadTime;
 }

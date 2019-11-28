@@ -7,12 +7,12 @@ import com.pflb.springtest.model.exception.ResourceNotFoundException;
 import com.pflb.springtest.repository.TestProfileRepository;
 import com.pflb.springtest.service.ITestProfileService;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
+import java.util.List;
 
 @Service
 public class TestProfileService implements ITestProfileService {
@@ -32,9 +32,10 @@ public class TestProfileService implements ITestProfileService {
     @Override
     public Collection<TestProfileDto> getAllProfiles() {
         Iterable<TestProfile> responseEntityList = testProfileRepository.findAll();
-        return StreamSupport.stream(responseEntityList.spliterator(), false)
-                .map(testProfile -> modelMapper.map(testProfile, TestProfileDto.class)
-                ).collect(Collectors.toList());
+        return modelMapper.map(responseEntityList, new TypeToken<List<TestProfileDto>>() {}.getType());
+//        return StreamSupport.stream(responseEntityList.spliterator(), false)
+//                .map(testProfile -> modelMapper.map(testProfile, TestProfileDto.class)
+//                ).collect(Collectors.toList());
     }
 
     @Override

@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -23,7 +23,7 @@ public class HistoryFileDto {
     @Type(type = "jsonb")
     private HarDto content;
 
-    private Date uploadTime;
+    private LocalDateTime uploadTime;
 
     private String browser;
 

@@ -9,6 +9,7 @@ import java.util.List;
 @AllArgsConstructor
 @RequiredArgsConstructor
 @NoArgsConstructor
+@Builder
 public class HarLogDto {
     @NonNull
     private List<HarEntryDto> entries;

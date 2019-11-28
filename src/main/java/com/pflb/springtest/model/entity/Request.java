@@ -42,6 +42,7 @@ public class Request {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "test_profile_id", nullable = false)
+    @EqualsAndHashCode.Exclude
     private TestProfile testProfile;
 
 }

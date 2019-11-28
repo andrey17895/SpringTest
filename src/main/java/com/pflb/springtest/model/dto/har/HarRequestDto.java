@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class HarRequestDto {
     @NonNull
     private String url;
