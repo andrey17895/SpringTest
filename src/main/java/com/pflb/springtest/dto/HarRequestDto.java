@@ -1,8 +1,6 @@
 package com.pflb.springtest.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import org.springframework.http.HttpMethod;
 
 import java.util.List;
@@ -12,13 +10,17 @@ import java.util.stream.Collectors;
 @Data
 @RequiredArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class HarRequestDto {
+    @NonNull
     private String url;
 
+    @NonNull
     private List<HarHeaderDto> headers;
 
     private HarPostDataDto postData;
 
+    @NonNull
     private HttpMethod method;
 
     public Map<String, String> getHeadersMap() {

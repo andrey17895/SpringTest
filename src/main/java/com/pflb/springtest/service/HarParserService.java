@@ -2,6 +2,7 @@ package com.pflb.springtest.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.exc.ValueInstantiationException;
 import com.pflb.springtest.dto.HarDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,9 +26,11 @@ public class HarParserService {
     public Optional<HarDto> parse(String message) {
         try {
             return Optional.of(objectMapper.readValue(message, HarDto.class));
-        }
-        catch (JsonProcessingException e){
-            logger.error("Har parsing error", e);
+        } catch (ValueInstantiationException exception) {
+            logger.error("Invalid har structure", exception);
+            return Optional.empty();
+        } catch (JsonProcessingException exception) {
+            logger.error("Har parsing error", exception);
             return Optional.empty();
         }
     }

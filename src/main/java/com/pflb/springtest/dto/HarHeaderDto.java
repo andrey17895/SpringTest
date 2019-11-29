@@ -1,13 +1,16 @@
 package com.pflb.springtest.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @RequiredArgsConstructor
 public class HarHeaderDto {
+
+    @NonNull
     private String name;
+
+    @NonNull
     private String value;
 }
