@@ -1,4 +1,4 @@
-package com.pflb.springtest.service;
+package com.pflb.springtest.service.impl;
 
 import com.pflb.springtest.model.dto.profile.RequestDto;
 import com.pflb.springtest.model.entity.Request;
@@ -7,6 +7,7 @@ import com.pflb.springtest.model.exception.CustomExceptionType;
 import com.pflb.springtest.model.exception.ResourceNotFoundException;
 import com.pflb.springtest.repository.RequestRepository;
 import com.pflb.springtest.repository.TestProfileRepository;
+import com.pflb.springtest.service.IRequestService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,7 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Service
-public class RequestServiceImpl implements IRequestService {
+public class RequestService implements IRequestService {
 
     private RequestRepository requestRepository;
 
@@ -25,7 +26,7 @@ public class RequestServiceImpl implements IRequestService {
     private ModelMapper modelMapper;
 
     @Autowired
-    public RequestServiceImpl(RequestRepository requestRepository, TestProfileRepository testProfileRepository, ModelMapper modelMapper) {
+    public RequestService(RequestRepository requestRepository, TestProfileRepository testProfileRepository, ModelMapper modelMapper) {
         this.requestRepository = requestRepository;
         this.testProfileRepository = testProfileRepository;
         this.modelMapper = modelMapper;

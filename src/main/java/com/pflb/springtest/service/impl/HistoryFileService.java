@@ -1,32 +1,33 @@
-package com.pflb.springtest.service;
+package com.pflb.springtest.service.impl;
 
 import com.pflb.springtest.jms.producer.JmsProducer;
 import com.pflb.springtest.model.dto.har.HarDto;
 import com.pflb.springtest.model.dto.profile.HistoryFileDto;
 import com.pflb.springtest.model.entity.HistoryFile;
-import com.pflb.springtest.model.exception.UnableToParceHarException;
 import com.pflb.springtest.repository.HistoryFileRepository;
+import com.pflb.springtest.service.IHistoryFileService;
+import com.pflb.springtest.service.IParserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collection;
 import java.util.Date;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Service
-public class HistoryFileServiceImpl implements IHistoryFileService {
+public class HistoryFileService implements IHistoryFileService {
 
 
     private HistoryFileRepository fileRepository;
     private ModelMapper mapper;
     private JmsProducer jmsProducer;
-    private IHarParserService harParserService;
+    private IParserService harParserService;
 
     @Autowired
-    public HistoryFileServiceImpl(HistoryFileRepository fileRepository, ModelMapper mapper, JmsProducer jmsProducer, IHarParserService harParserService) {
+    public HistoryFileService(HistoryFileRepository fileRepository, ModelMapper mapper, JmsProducer jmsProducer, IParserService harParserService) {
         this.fileRepository = fileRepository;
         this.mapper = mapper;
         this.jmsProducer = jmsProducer;
@@ -34,23 +35,19 @@ public class HistoryFileServiceImpl implements IHistoryFileService {
     }
 
     @Override
-    public HistoryFileDto processFile(String content) {
-        Optional<HarDto> harDto = harParserService.parse(content);
+    public HistoryFileDto processFile(MultipartFile file) {
+        HarDto harDto = harParserService.parse(file);
+        HistoryFile historyFile = HistoryFile.builder()
+                .name("HarFile")
+                .content(harDto)
+                .uploadTime(new Date())
+                .version(harDto.getLog().getVersion())
+                .browser(harDto.getLog().getBrowser() != null ? harDto.getLog().getBrowser().getName() : null)
+                .build();
+        HistoryFile response = fileRepository.save(historyFile);
+        sendJms(response.getContent());
+        return mapper.map(response, HistoryFileDto.class);
 
-        if (harDto.isPresent()) {
-            HistoryFile historyFile = HistoryFile.builder()
-                    .name("HarFile")
-                    .content(harDto.get())
-                    .uploadTime(new Date())
-                    .version(harDto.get().getLog().getVersion())
-                    .browser(harDto.get().getLog().getBrowser() != null ? harDto.get().getLog().getBrowser().getName() : null)
-                    .build();
-            HistoryFile response = fileRepository.save(historyFile);
-            sendJms(response.getContent());
-            return mapper.map(response, HistoryFileDto.class);
-        } else {
-            throw new UnableToParceHarException(content);
-        }
     }
 
     private void sendJms(HarDto message) {
