@@ -11,7 +11,7 @@
                 <constraints primaryKey="true" primaryKeyName="history_file_pkey"/>
             </column>
             <column name="name" type="VARCHAR(100)"/>
-            <column name="content" type="TEXT"/>
+            <column name="content" type="JSONB"/>
             <column name="upload_time" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
         </createTable>
     </changeSet>

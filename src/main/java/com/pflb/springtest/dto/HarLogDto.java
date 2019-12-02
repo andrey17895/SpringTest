@@ -1,9 +1,6 @@
 package com.pflb.springtest.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
@@ -11,6 +8,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @RequiredArgsConstructor
+@NoArgsConstructor
 public class HarLogDto {
     @NonNull
     private List<HarEntryDto> entries;

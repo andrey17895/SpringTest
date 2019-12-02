@@ -13,52 +13,37 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class ListenerServiceImpl implements ListenerService {
 
-    private HarParserService harParserService;
-
     private TestProfileRepository testProfileRepository;
 
     private final Logger logger = LoggerFactory.getLogger(RabbitMessagingListener.class);
 
-
     @Autowired
-    public ListenerServiceImpl(HarParserService harParserService, TestProfileRepository testProfileRepository) {
-        this.harParserService = harParserService;
+    public ListenerServiceImpl(TestProfileRepository testProfileRepository) {
         this.testProfileRepository = testProfileRepository;
     }
 
     @Override
-    public void process(String message) {
-        Optional<HarDto> harWrapper = harParserService.parse(message);
-        try {
-            if (harWrapper.isPresent()) {
-                TestProfileEntity testProfileEntity = new TestProfileEntity();
-                List<HarEntryDto> entries = harWrapper.get().getLog().getEntries();
-                List<RequestEntity> requestEntities = entries.stream()
-                        .map(entry -> {
-                            HarRequestDto harRequestDto = entry.getRequest();
-                            return RequestEntity.builder()
-                                    .url(harRequestDto.getUrl())
-                                    .body  (harRequestDto.getPostData() != null ? harRequestDto.getPostData().getText() : null)
-                                    .params(harRequestDto.getPostData() != null ? harRequestDto.getPostData().getParamsMap() : null)
-                                    .headers(harRequestDto.getHeadersMap())
-                                    .method(harRequestDto.getMethod())
-                                    .testProfile(testProfileEntity)
-                                    .build();
-                        }).collect(Collectors.toList());
-                testProfileEntity.setRequests(requestEntities);
-                testProfileRepository.save(testProfileEntity);
-            }
-        }
-        catch (Exception e) {
-            logger.error("Listener exception", e);
-        }
+    public void process(HarDto message) {
+        TestProfileEntity testProfileEntity = new TestProfileEntity();
+        List<HarEntryDto> entries = message.getLog().getEntries();
+        List<RequestEntity> requestEntities = entries.stream()
+                .map(entry -> {
+                    HarRequestDto harRequestDto = entry.getRequest();
+                    return RequestEntity.builder()
+                            .url(harRequestDto.getUrl())
+                            .body  (harRequestDto.getPostData() != null ? harRequestDto.getPostData().getText() : null)
+                            .params(harRequestDto.getPostData() != null ? harRequestDto.getPostData().getParamsMap() : null)
+                            .headers(harRequestDto.getHeadersMap())
+                            .method(harRequestDto.getMethod())
+                            .testProfile(testProfileEntity)
+                            .build();
+                }).collect(Collectors.toList());
+        testProfileEntity.setRequests(requestEntities);
+        testProfileRepository.save(testProfileEntity);
     }
-
-
 }

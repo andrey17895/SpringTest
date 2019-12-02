@@ -1,6 +1,7 @@
 package com.pflb.springtest.jms.producer;
 
 import com.pflb.springtest.configuration.RabbitSenderConfiguration;
+import com.pflb.springtest.dto.HarDto;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,7 @@ public class RabbitJmsProducer implements JmsProducer {
         this.rabbitSenderConfiguration = rabbitSenderConfiguration;
     }
 
-    public void sendMessage(String message) {
+    public void sendMessage(HarDto message) {
         rabbitTemplate.convertAndSend(rabbitSenderConfiguration.getQueueName(), message);
     }
 }

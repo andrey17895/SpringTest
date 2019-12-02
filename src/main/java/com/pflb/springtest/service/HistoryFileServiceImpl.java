@@ -1,13 +1,17 @@
 package com.pflb.springtest.service;
 
+import com.pflb.springtest.dto.HarDto;
 import com.pflb.springtest.dto.HistoryFileDto;
 import com.pflb.springtest.entity.HistoryFileEntity;
 import com.pflb.springtest.jms.producer.JmsProducer;
+import com.pflb.springtest.model.UnableToParceHarException;
 import com.pflb.springtest.repository.HistoryFileRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -18,23 +22,34 @@ public class HistoryFileServiceImpl implements HistoryFileService {
     private HistoryFileRepository fileRepository;
     private ModelMapper mapper;
     private JmsProducer jmsProducer;
+    private HarParserService harParserService;
 
     @Autowired
-    public HistoryFileServiceImpl(HistoryFileRepository fileRepository, ModelMapper mapper, JmsProducer jmsProducer) {
+    public HistoryFileServiceImpl(HistoryFileRepository fileRepository, ModelMapper mapper, JmsProducer jmsProducer, HarParserService harParserService) {
         this.fileRepository = fileRepository;
         this.mapper = mapper;
         this.jmsProducer = jmsProducer;
+        this.harParserService = harParserService;
     }
 
     @Override
-    public HistoryFileDto processFile(HistoryFileDto historyFileDto) {
-        HistoryFileEntity historyFileEntity = mapper.map(historyFileDto, HistoryFileEntity.class);
-        HistoryFileEntity response = fileRepository.save(historyFileEntity);
-        sendJms(response.getContent());
-        return mapper.map(response, HistoryFileDto.class);
+    public HistoryFileDto processFile(String content) {
+        Optional<HarDto> harDto = harParserService.parse(content);
+
+        if (harDto.isPresent()) {
+            HistoryFileEntity historyFileEntity =  HistoryFileEntity.builder()
+                    .name("HarFile")
+                    .content(harDto.get())
+                    .uploadTime(new Date()).build();
+            HistoryFileEntity response = fileRepository.save(historyFileEntity);
+            sendJms(response.getContent());
+            return mapper.map(response, HistoryFileDto.class);
+        } else {
+            throw new UnableToParceHarException(content);
+        }
     }
 
-    private void sendJms(String message) {
+    private void sendJms(HarDto message) {
         jmsProducer.sendMessage(message);
     }
 
