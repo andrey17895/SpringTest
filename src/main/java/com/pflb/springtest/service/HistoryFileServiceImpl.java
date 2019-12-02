@@ -37,10 +37,13 @@ public class HistoryFileServiceImpl implements HistoryFileService {
         Optional<HarDto> harDto = harParserService.parse(content);
 
         if (harDto.isPresent()) {
-            HistoryFileEntity historyFileEntity =  HistoryFileEntity.builder()
+            HistoryFileEntity historyFileEntity = HistoryFileEntity.builder()
                     .name("HarFile")
                     .content(harDto.get())
-                    .uploadTime(new Date()).build();
+                    .uploadTime(new Date())
+                    .version(harDto.get().getLog().getVersion())
+                    .browser(harDto.get().getLog().getBrowser() != null ? harDto.get().getLog().getBrowser().getName() : null)
+                    .build();
             HistoryFileEntity response = fileRepository.save(historyFileEntity);
             sendJms(response.getContent());
             return mapper.map(response, HistoryFileDto.class);

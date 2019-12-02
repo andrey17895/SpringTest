@@ -12,5 +12,6 @@ import java.util.List;
 public class HarLogDto {
     @NonNull
     private List<HarEntryDto> entries;
+    private HarBrowserDto browser;
     private String version;
 }

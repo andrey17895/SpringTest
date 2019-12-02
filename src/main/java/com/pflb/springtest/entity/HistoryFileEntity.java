@@ -28,6 +28,10 @@ public class HistoryFileEntity {
     @Type(type = "jsonb")
     private HarDto content;
 
+    private String browser;
+
+    private String version;
+
     @NonNull
     private Date uploadTime;
 }

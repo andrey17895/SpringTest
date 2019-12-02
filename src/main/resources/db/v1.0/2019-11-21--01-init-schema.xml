@@ -13,6 +13,8 @@
             <column name="name" type="VARCHAR(100)"/>
             <column name="content" type="JSONB"/>
             <column name="upload_time" type="TIMESTAMP(6) WITHOUT TIME ZONE"/>
+            <column name="version" type="VARCHAR(10)"/>
+            <column name="browser" type="VARCHAR(100)"/>
         </createTable>
     </changeSet>
     <changeSet author="Balakirev Andrey" id="2019-11-21--01-init-schema-test-profile-sequence">

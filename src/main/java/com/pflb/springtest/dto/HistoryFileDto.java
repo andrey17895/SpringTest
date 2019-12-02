@@ -23,4 +23,8 @@ public class HistoryFileDto {
     private HarDto content;
 
     private Date uploadTime;
+
+    private String browser;
+
+    private String version;
 }
