@@ -1,7 +1,7 @@
 package com.pflb.springtest.jms.producer;
 
-import com.pflb.springtest.configuration.RabbitSenderConfiguration;
-import com.pflb.springtest.dto.HarDto;
+import com.pflb.springtest.configuration.MqConsumerProperties;
+import com.pflb.springtest.model.dto.har.HarDto;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,15 +11,15 @@ public class RabbitJmsProducer implements JmsProducer {
 
     private RabbitTemplate rabbitTemplate;
 
-    private RabbitSenderConfiguration rabbitSenderConfiguration;
+    private MqConsumerProperties properties;
 
     @Autowired
-    public RabbitJmsProducer(RabbitTemplate rabbitTemplate, RabbitSenderConfiguration rabbitSenderConfiguration) {
+    public RabbitJmsProducer(RabbitTemplate rabbitTemplate, MqConsumerProperties properties) {
         this.rabbitTemplate = rabbitTemplate;
-        this.rabbitSenderConfiguration = rabbitSenderConfiguration;
+        this.properties = properties;
     }
 
     public void sendMessage(HarDto message) {
-        rabbitTemplate.convertAndSend(rabbitSenderConfiguration.getQueueName(), message);
+        rabbitTemplate.convertAndSend(properties.getQueueName(), message);
     }
 }

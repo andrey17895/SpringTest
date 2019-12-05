@@ -1,4 +1,4 @@
-package com.pflb.springtest.entity;
+package com.pflb.springtest.model.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,13 +13,13 @@ import java.util.List;
 @RequiredArgsConstructor
 @NoArgsConstructor
 @Table(name = "test_profile")
-public class TestProfileEntity {
+public class TestProfile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NonNull
     @OneToMany(mappedBy = "testProfile", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<RequestEntity> requests;
+    private List<Request> requests;
 
 }

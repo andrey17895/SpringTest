@@ -1,5 +1,10 @@
-mq:
-  queueName: "fileSend"
+springtest:
+  mq:
+    consumer:
+      queueName: "fileSend"
+    producer:
+      queueName: "fileSend"
+
 
 
 spring:

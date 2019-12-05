@@ -1,37 +1,31 @@
-package com.pflb.springtest.entity;
+package com.pflb.springtest.model.dto.profile;
 
-import com.pflb.springtest.dto.HarDto;
+import com.pflb.springtest.model.dto.har.HarDto;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 
-import javax.persistence.*;
 import java.util.Date;
 
 @Data
-@Entity
-@RequiredArgsConstructor
 @Builder
 @AllArgsConstructor
-@Table(name = "history_file")
+@RequiredArgsConstructor
 @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
-public class HistoryFileEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class HistoryFileDto {
 
-    @NonNull
     private String name;
 
-    @NonNull
     @Type(type = "jsonb")
     private HarDto content;
+
+    private Date uploadTime;
 
     private String browser;
 
     private String version;
-
-    @NonNull
-    private Date uploadTime;
 }

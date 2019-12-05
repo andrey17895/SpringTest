@@ -1,4 +1,4 @@
-package com.pflb.springtest.model;
+package com.pflb.springtest.model.exception;
 
 public class UnableToParceHarException extends RuntimeException {
     public UnableToParceHarException(String content) {

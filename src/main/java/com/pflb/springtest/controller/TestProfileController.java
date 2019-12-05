@@ -1,23 +1,25 @@
 package com.pflb.springtest.controller;
 
-import com.pflb.springtest.dto.TestProfileDto;
-import com.pflb.springtest.service.TestProfileService;
+import com.pflb.springtest.model.dto.profile.TestProfileDto;
+import com.pflb.springtest.service.ITestProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Collection;
 
 @RestController
 public class TestProfileController {
 
-    private TestProfileService testProfileService;
+    private ITestProfileService testProfileService;
 
     @Autowired
-    public TestProfileController(TestProfileService testProfileService) {
+    public TestProfileController(ITestProfileService testProfileService) {
         this.testProfileService = testProfileService;
     }
 
     @GetMapping(value = "/testProfile")
     @ResponseBody
-    public Iterable<TestProfileDto> getAllProfiles() {
+    public Collection<TestProfileDto> getAllProfiles() {
         return testProfileService.getAllProfiles();
     }
 

@@ -1,19 +1,20 @@
 package com.pflb.springtest.service;
 
-import com.pflb.springtest.dto.TestProfileDto;
-import com.pflb.springtest.entity.TestProfileEntity;
-import com.pflb.springtest.model.CustomExceptionType;
-import com.pflb.springtest.model.ResourceNotFoundException;
+import com.pflb.springtest.model.dto.profile.TestProfileDto;
+import com.pflb.springtest.model.entity.TestProfile;
+import com.pflb.springtest.model.exception.CustomExceptionType;
+import com.pflb.springtest.model.exception.ResourceNotFoundException;
 import com.pflb.springtest.repository.TestProfileRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Service
-public class TestProfileServiceImpl implements TestProfileService {
+public class TestProfileServiceImpl implements ITestProfileService {
 
     private TestProfileRepository testProfileRepository;
 
@@ -28,8 +29,8 @@ public class TestProfileServiceImpl implements TestProfileService {
 
 
     @Override
-    public Iterable<TestProfileDto> getAllProfiles() {
-        Iterable<TestProfileEntity> responseEntityList = testProfileRepository.findAll();
+    public Collection<TestProfileDto> getAllProfiles() {
+        Iterable<TestProfile> responseEntityList = testProfileRepository.findAll();
         return StreamSupport.stream(responseEntityList.spliterator(), false)
                 .map(testProfile -> modelMapper.map(testProfile, TestProfileDto.class)
                 ).collect(Collectors.toList());
@@ -37,28 +38,28 @@ public class TestProfileServiceImpl implements TestProfileService {
 
     @Override
     public TestProfileDto getTestProfileById(Long testProfileId) {
-        TestProfileEntity testProfileEntity = testProfileRepository.findById(testProfileId)
+        TestProfile testProfile = testProfileRepository.findById(testProfileId)
                 .orElseThrow(()-> new ResourceNotFoundException(CustomExceptionType.TEST_PROFILE_NOT_FOUND, testProfileId));
-        return modelMapper.map(testProfileEntity, TestProfileDto.class);
+        return modelMapper.map(testProfile, TestProfileDto.class);
     }
 
     @Override
     public TestProfileDto createTestProfile(TestProfileDto newTestProfileDto) {
-        TestProfileEntity newTestProfileEntity =  modelMapper.map(newTestProfileDto, TestProfileEntity.class);
-        TestProfileEntity responseEntity = testProfileRepository.save(newTestProfileEntity);
+        TestProfile newTestProfile =  modelMapper.map(newTestProfileDto, TestProfile.class);
+        TestProfile responseEntity = testProfileRepository.save(newTestProfile);
         return modelMapper.map(responseEntity, TestProfileDto.class);
     }
 
     @Override
     public TestProfileDto updateTestProfile(TestProfileDto newTestProfileDto, Long testProfileId) {
-        TestProfileEntity newTestProfileEntity =  modelMapper.map(newTestProfileDto, TestProfileEntity.class);
+        TestProfile newTestProfile =  modelMapper.map(newTestProfileDto, TestProfile.class);
 
         if (!testProfileRepository.existsById(testProfileId)) {
             throw new ResourceNotFoundException(CustomExceptionType.TEST_PROFILE_NOT_FOUND, testProfileId);
         }
-        newTestProfileEntity.setId(testProfileId);
-        newTestProfileEntity.getRequests().forEach(request -> request.setTestProfile(newTestProfileEntity));
-        TestProfileEntity responseEntity = testProfileRepository.save(newTestProfileEntity);
+        newTestProfile.setId(testProfileId);
+        newTestProfile.getRequests().forEach(request -> request.setTestProfile(newTestProfile));
+        TestProfile responseEntity = testProfileRepository.save(newTestProfile);
 ;
         return modelMapper.map(responseEntity, TestProfileDto.class);
     }

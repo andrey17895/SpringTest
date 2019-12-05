@@ -1,7 +1,7 @@
 package com.pflb.springtest.controller;
 
-import com.pflb.springtest.dto.HistoryFileDto;
-import com.pflb.springtest.service.HistoryFileService;
+import com.pflb.springtest.model.dto.profile.HistoryFileDto;
+import com.pflb.springtest.service.IHistoryFileService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,10 +15,10 @@ import java.util.stream.Collectors;
 @RestController
 public class FileUploadController {
 
-    private HistoryFileService historyFileService;
+    private IHistoryFileService historyFileService;
 
     @Autowired
-    public FileUploadController(HistoryFileService historyFileService) {
+    public FileUploadController(IHistoryFileService historyFileService) {
         this.historyFileService = historyFileService;
     }
 
