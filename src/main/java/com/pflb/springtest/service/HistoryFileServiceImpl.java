@@ -1,31 +1,32 @@
 package com.pflb.springtest.service;
 
-import com.pflb.springtest.dto.HarDto;
-import com.pflb.springtest.dto.HistoryFileDto;
-import com.pflb.springtest.entity.HistoryFileEntity;
 import com.pflb.springtest.jms.producer.JmsProducer;
-import com.pflb.springtest.model.UnableToParceHarException;
+import com.pflb.springtest.model.dto.har.HarDto;
+import com.pflb.springtest.model.dto.profile.HistoryFileDto;
+import com.pflb.springtest.model.entity.HistoryFile;
+import com.pflb.springtest.model.exception.UnableToParceHarException;
 import com.pflb.springtest.repository.HistoryFileRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Service
-public class HistoryFileServiceImpl implements HistoryFileService {
+public class HistoryFileServiceImpl implements IHistoryFileService {
 
 
     private HistoryFileRepository fileRepository;
     private ModelMapper mapper;
     private JmsProducer jmsProducer;
-    private HarParserService harParserService;
+    private IHarParserService harParserService;
 
     @Autowired
-    public HistoryFileServiceImpl(HistoryFileRepository fileRepository, ModelMapper mapper, JmsProducer jmsProducer, HarParserService harParserService) {
+    public HistoryFileServiceImpl(HistoryFileRepository fileRepository, ModelMapper mapper, JmsProducer jmsProducer, IHarParserService harParserService) {
         this.fileRepository = fileRepository;
         this.mapper = mapper;
         this.jmsProducer = jmsProducer;
@@ -37,14 +38,14 @@ public class HistoryFileServiceImpl implements HistoryFileService {
         Optional<HarDto> harDto = harParserService.parse(content);
 
         if (harDto.isPresent()) {
-            HistoryFileEntity historyFileEntity = HistoryFileEntity.builder()
+            HistoryFile historyFile = HistoryFile.builder()
                     .name("HarFile")
                     .content(harDto.get())
                     .uploadTime(new Date())
                     .version(harDto.get().getLog().getVersion())
                     .browser(harDto.get().getLog().getBrowser() != null ? harDto.get().getLog().getBrowser().getName() : null)
                     .build();
-            HistoryFileEntity response = fileRepository.save(historyFileEntity);
+            HistoryFile response = fileRepository.save(historyFile);
             sendJms(response.getContent());
             return mapper.map(response, HistoryFileDto.class);
         } else {
@@ -57,8 +58,8 @@ public class HistoryFileServiceImpl implements HistoryFileService {
     }
 
     @Override
-    public Iterable<HistoryFileDto> getAllFiles() {
-        Iterable<HistoryFileEntity> fileEntities = fileRepository.findAll();
+    public Collection<HistoryFileDto> getAllFiles() {
+        Iterable<HistoryFile> fileEntities = fileRepository.findAll();
         return StreamSupport.stream(fileEntities.spliterator(), false)
                 .map(entity -> mapper.map(entity, HistoryFileDto.class))
                 .collect(Collectors.toList());

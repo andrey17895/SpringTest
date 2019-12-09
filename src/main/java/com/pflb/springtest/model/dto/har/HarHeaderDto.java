@@ -1,4 +1,4 @@
-package com.pflb.springtest.dto;
+package com.pflb.springtest.model.dto.har;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,7 +8,11 @@ import lombok.RequiredArgsConstructor;
 @Data
 @RequiredArgsConstructor
 @NoArgsConstructor
-public class HarDto {
+public class HarHeaderDto {
+
     @NonNull
-    private HarLogDto log;
+    private String name;
+
+    @NonNull
+    private String value;
 }

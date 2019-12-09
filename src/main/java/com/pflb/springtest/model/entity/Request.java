@@ -1,4 +1,4 @@
-package com.pflb.springtest.entity;
+package com.pflb.springtest.model.entity;
 
 import lombok.*;
 import org.springframework.http.HttpMethod;
@@ -13,7 +13,7 @@ import java.util.Map;
 @AllArgsConstructor
 @ToString(exclude = {"testProfile"})
 @Table(name = "request")
-public class RequestEntity {
+public class Request {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -42,7 +42,7 @@ public class RequestEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "test_profile_id", nullable = false)
-    private TestProfileEntity testProfile;
+    private TestProfile testProfile;
 
 }
 

@@ -1,4 +1,4 @@
-package com.pflb.springtest.dto;
+package com.pflb.springtest.model.dto.har;
 
 import lombok.*;
 

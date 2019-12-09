@@ -1,4 +1,4 @@
-package com.pflb.springtest.dto;
+package com.pflb.springtest.model.dto.profile;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;

@@ -1,24 +1,26 @@
 package com.pflb.springtest.controller;
 
-import com.pflb.springtest.dto.RequestDto;
-import com.pflb.springtest.service.RequestService;
+import com.pflb.springtest.model.dto.profile.RequestDto;
+import com.pflb.springtest.service.IRequestService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
+
 @RestController
 public class RequestController {
 
-    private RequestService requestService;
+    private IRequestService requestService;
 
     @Autowired
-    public RequestController(RequestService requestService) {
+    public RequestController(IRequestService requestService) {
         this.requestService = requestService;
     }
 
     @GetMapping(value = "/requests")
     @ResponseBody
-    public Iterable<RequestDto> getAllRequests() {
+    public Collection<RequestDto> getAllRequests() {
         return requestService.getAllRequests();
     }
 
@@ -29,7 +31,7 @@ public class RequestController {
 
     @GetMapping(value = "/testProfile/{testProfileId}/requests")
     @ResponseBody
-    public Iterable<RequestDto> getAllRequests(@PathVariable Long testProfileId) {
+    public Collection<RequestDto> getAllRequests(@PathVariable Long testProfileId) {
         return requestService.getAllRequests(testProfileId);
     }
 

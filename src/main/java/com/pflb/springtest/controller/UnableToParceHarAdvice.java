@@ -1,6 +1,6 @@
 package com.pflb.springtest.controller;
 
-import com.pflb.springtest.model.UnableToParceHarException;
+import com.pflb.springtest.model.exception.UnableToParceHarException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

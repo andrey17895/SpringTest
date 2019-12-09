@@ -1,9 +1,11 @@
 package com.pflb.springtest.service;
 
-import com.pflb.springtest.dto.TestProfileDto;
+import com.pflb.springtest.model.dto.profile.TestProfileDto;
 
-public interface TestProfileService {
-    Iterable<TestProfileDto> getAllProfiles();
+import java.util.Collection;
+
+public interface ITestProfileService {
+    Collection<TestProfileDto> getAllProfiles();
 
     TestProfileDto getTestProfileById(Long testProfileId);
 

@@ -1,18 +1,15 @@
-package com.pflb.springtest.dto;
+package com.pflb.springtest.model.dto.har;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
+
 @Data
 @RequiredArgsConstructor
 @NoArgsConstructor
-public class HarHeaderDto {
-
+public class HarEntryDto {
     @NonNull
-    private String name;
-
-    @NonNull
-    private String value;
+    private HarRequestDto request;
 }
