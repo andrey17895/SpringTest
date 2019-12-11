@@ -1,10 +1,11 @@
-package com.pflb.springtest.service;
+package com.pflb.springtest.service.impl;
 
 import com.pflb.springtest.model.dto.profile.TestProfileDto;
 import com.pflb.springtest.model.entity.TestProfile;
 import com.pflb.springtest.model.exception.CustomExceptionType;
 import com.pflb.springtest.model.exception.ResourceNotFoundException;
 import com.pflb.springtest.repository.TestProfileRepository;
+import com.pflb.springtest.service.ITestProfileService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,14 +15,14 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Service
-public class TestProfileServiceImpl implements ITestProfileService {
+public class TestProfileService implements ITestProfileService {
 
     private TestProfileRepository testProfileRepository;
 
     private ModelMapper modelMapper;
 
     @Autowired
-    public TestProfileServiceImpl(TestProfileRepository testProfileRepository, ModelMapper modelMapper) {
+    public TestProfileService(TestProfileRepository testProfileRepository, ModelMapper modelMapper) {
         this.testProfileRepository = testProfileRepository;
         this.modelMapper = modelMapper;
     }
