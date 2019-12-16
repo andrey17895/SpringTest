@@ -1,9 +1,6 @@
 package com.pflb.springtest.model.entity;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -11,6 +8,8 @@ import java.util.List;
 @Data
 @Entity
 @RequiredArgsConstructor
+@AllArgsConstructor
+@Builder
 @NoArgsConstructor
 @Table(name = "test_profile")
 public class TestProfile {

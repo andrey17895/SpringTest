@@ -4,6 +4,7 @@ import com.pflb.springtest.model.dto.profile.HistoryFileDto;
 import com.pflb.springtest.service.IHistoryFileService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,7 +30,8 @@ public class FileUploadController {
         return historyFileService.getAllFiles();
     }
 
-    @DeleteMapping(value = "uploadFile")
+    @DeleteMapping(value = "/uploadFile")
+    @ResponseStatus(code = HttpStatus.OK)
     public void deleteAll() {
         historyFileService.deleteAllFiles();
     }

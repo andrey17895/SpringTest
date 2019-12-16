@@ -8,14 +8,14 @@ import com.pflb.springtest.repository.HistoryFileRepository;
 import com.pflb.springtest.service.IHistoryFileService;
 import com.pflb.springtest.service.IParserService;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.Date;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
+import java.util.List;
 
 @Service
 public class HistoryFileService implements IHistoryFileService {
@@ -40,7 +40,7 @@ public class HistoryFileService implements IHistoryFileService {
         HistoryFile historyFile = HistoryFile.builder()
                 .name("HarFile")
                 .content(harDto)
-                .uploadTime(new Date())
+                .uploadTime(LocalDateTime.now())
                 .version(harDto.getLog().getVersion())
                 .browser(harDto.getLog().getBrowser() != null ? harDto.getLog().getBrowser().getName() : null)
                 .build();
@@ -57,9 +57,7 @@ public class HistoryFileService implements IHistoryFileService {
     @Override
     public Collection<HistoryFileDto> getAllFiles() {
         Iterable<HistoryFile> fileEntities = fileRepository.findAll();
-        return StreamSupport.stream(fileEntities.spliterator(), false)
-                .map(entity -> mapper.map(entity, HistoryFileDto.class))
-                .collect(Collectors.toList());
+        return mapper.map(fileEntities, new TypeToken<List<HistoryFileDto>>() {}.getType());
     }
 
     @Override
