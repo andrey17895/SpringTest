@@ -7,13 +7,10 @@ import com.pflb.springtest.model.exception.CustomExceptionType;
 import com.pflb.springtest.model.exception.ResourceNotFoundException;
 import com.pflb.springtest.repository.TestProfileRepository;
 import com.pflb.springtest.service.impl.TestProfileService;
-import org.jetbrains.annotations.NotNull;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -21,11 +18,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -46,25 +40,10 @@ class TestProfileServiceTest {
     @InjectMocks
     private TestProfileService testProfileService;
 
-    private static List<TestProfileDto> listTestProfileDtoSingle;
-    private static List<TestProfile> listTestProfileSingle;
-
-    @BeforeAll
-    static void beforeAll() {
-        System.out.println("Hi");
-        listTestProfileDtoSingle = Arrays.asList(
-                TestGenerator.testProfileDto("ya.ru"),
-                TestGenerator.testProfileDto("ya.ru")
-        );
-        listTestProfileSingle = Arrays.asList(
-                TestGenerator.testProfileEntity(1L, "ya.ru", "text", null),
-                TestGenerator.testProfileEntity(2L, "bumq.io", "text", null)
-        );
-    }
 
     @ParameterizedTest
     @DisplayName("Get all profiles")
-    @MethodSource("streamOfTestProfilesLists")
+    @MethodSource("com.pflb.springtest.service.provider.TestProfileArgProvider#getAllProfiles_Exists")
     void getAllProfiles_Exists(List<TestProfileDto> testProfileDtos, List<TestProfile> testProfiles) {
         when(testProfileRepository.findAll()).thenReturn(testProfiles);
         when(modelMapper.map(any(), eq(new TypeToken<List<TestProfileDto>>() {}.getType()))).thenReturn(testProfileDtos);
@@ -74,7 +53,7 @@ class TestProfileServiceTest {
 
     @ParameterizedTest
     @DisplayName("Get test profile by id. Exists")
-    @MethodSource("streamOfTestProfile")
+    @MethodSource("com.pflb.springtest.service.provider.TestProfileArgProvider#getTestProfileById_Exists")
     void getTestProfileById_Exists(TestProfileDto testProfileDto, TestProfile testProfile) {
         when(testProfileRepository.findById(1L)).thenReturn(Optional.of(TestGenerator.testProfileEntity(1L, "ya.ru", "text", null)));
         when(modelMapper.map(any(), eq(TestProfileDto.class))).thenReturn(TestGenerator.testProfileDto("ya.ru"));
@@ -92,7 +71,7 @@ class TestProfileServiceTest {
 
     @ParameterizedTest
     @DisplayName("Create test profile")
-    @MethodSource("streamOfTestProfile")
+    @MethodSource("com.pflb.springtest.service.provider.TestProfileArgProvider#createTestProfile")
     void createTestProfile(TestProfileDto testProfileDto, TestProfile testProfile) {
         when(modelMapper.map(any(), eq(TestProfile.class))).thenReturn(testProfile);
         when(modelMapper.map(any(), eq(TestProfileDto.class))).thenReturn(testProfileDto);
@@ -103,7 +82,7 @@ class TestProfileServiceTest {
 
     @ParameterizedTest
     @DisplayName("Update test profile. Exists")
-    @MethodSource("streamOfTestProfile")
+    @MethodSource("com.pflb.springtest.service.provider.TestProfileArgProvider#updateTestProfile_Exists")
     void updateTestProfile_Exists(TestProfileDto testProfileDto, TestProfile testProfile) {
         when(testProfileRepository.existsById(1L)).thenReturn(true);
         when(modelMapper.map(any(), eq(TestProfile.class))).thenReturn(testProfile);
@@ -130,35 +109,4 @@ class TestProfileServiceTest {
         testProfileService.deleteAll();
         verify(testProfileRepository).deleteAll();
     }
-
-
-    @NotNull
-    private static Stream<Arguments> streamOfTestProfilesLists() {
-        return Stream.of(
-                Arguments.of(
-                        listTestProfileDtoSingle.subList(0,1),
-                        listTestProfileSingle.subList(0, 1)
-                ),
-                Arguments.of(
-                        listTestProfileDtoSingle,
-                        listTestProfileSingle
-                ),
-                Arguments.of(
-                        Collections.emptyList(),
-                        Collections.emptyList()
-                )
-        );
-    }
-
-    @NotNull
-    private static Stream<Arguments> streamOfTestProfile() {
-        return Stream.of(
-                Arguments.of(
-                        listTestProfileDtoSingle.get(0),
-                        listTestProfileSingle.get(0)
-                )
-        );
-    }
-
-
 }

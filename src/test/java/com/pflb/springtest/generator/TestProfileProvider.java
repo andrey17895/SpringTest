@@ -9,7 +9,7 @@ public class TestProfileProvider {
     public static TestProfileDto dto() {
         return TestProfileDto.builder()
                 .requests(Collections.singletonList(
-                        RequestProvider.dto("", Collections.emptyMap())
+                        RequestProvider.dto("", Collections.emptyMap(), "ya.ru")
                 ))
                 .build();
     }

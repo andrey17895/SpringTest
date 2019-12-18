@@ -19,8 +19,12 @@ public class RequestProvider {
                 .build();
     }
 
-    public static RequestDto dto(String body ,Map<String, String> params) {
-        return dto(body, Collections.emptyMap(), params, HttpMethod.GET, "ya.ru");
+    public static RequestDto dto(String url) {
+        return dto("", Collections.emptyMap(), url);
+    }
+
+    public static RequestDto dto(String body, Map<String, String> params, String url) {
+        return dto(body, Collections.emptyMap(), params, HttpMethod.GET, url);
     }
 
     public static Request entity(Long id, String body, Map<String, String> headers, Map<String, String> params, HttpMethod method, String url) {
@@ -36,5 +40,9 @@ public class RequestProvider {
 
     public static Request entity(Long id, String body, Map<String, String> params, String url) {
         return entity(id, body, Collections.emptyMap(), params, HttpMethod.GET, url);
+    }
+
+    public static Request entity(Long id, String url) {
+        return entity(id, "", Collections.emptyMap(), url);
     }
 }
