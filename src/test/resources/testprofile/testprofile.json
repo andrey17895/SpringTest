@@ -1,0 +1,44 @@
+{
+  "requests": [
+    {
+      "url": "https://ya.ru/",
+      "body": null,
+      "headers": {
+        "Cookie": "yandexuid",
+        "Cache-Control": "max-age=0",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Upgrade-Insecure-Requests": "1",
+        "Connection": "keep-alive",
+        "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:68.0) Gecko/20100101 Firefox/68.0",
+        "Host": "ya.ru",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Accept-Language": "en-US,en;q=0.5"
+      },
+      "params": {},
+      "method": "GET",
+      "perc": null
+    },
+    {
+      "url": "https://mc.yandex.ru/watch/",
+      "body": "{\"param1\":\"value1\"},",
+      "headers": {
+        "Origin": "https://ya.ru",
+        "Cache-Control": "max-age=0",
+        "Accept": "*/*",
+        "Referer": "https://ya.ru/",
+        "Connection": "keep-alive",
+        "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:68.0) Gecko/20100101 Firefox/68.0",
+        "Host": "mc.yandex.ru",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Accept-Language": "en-US,en;q=0.5",
+        "Content-Length": "0",
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      "params": {
+        "param1":"value1"
+      },
+      "method": "POST",
+      "perc": null
+    }
+  ]
+}

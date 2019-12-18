@@ -4,7 +4,6 @@ import com.pflb.springtest.model.dto.profile.HistoryFileDto;
 import com.pflb.springtest.service.IHistoryFileService;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -13,7 +12,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.util.LinkedMultiValueMap;
 
 import java.util.List;
@@ -22,8 +21,8 @@ import static org.hamcrest.Matchers.isA;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("test")
 @Disabled
 class FileUploadControllerTest {
 
@@ -40,8 +39,9 @@ class FileUploadControllerTest {
 
         ResponseEntity<HistoryFileDto> response = testRestTemplate.postForEntity("/uploadFile", parameters, HistoryFileDto.class);
 
-        assertThat(response.getStatusCode(), is(HttpStatus.CREATED));
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), isA(HistoryFileDto.class));
+        //TODO дополнить валидацию ответа
     }
 
     @Test

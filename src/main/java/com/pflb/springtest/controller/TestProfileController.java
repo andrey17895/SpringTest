@@ -5,6 +5,7 @@ import com.pflb.springtest.service.ITestProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Collection;
 
 @RestController
@@ -31,7 +32,7 @@ public class TestProfileController {
 
     @PostMapping(value = "/testProfile")
     @ResponseBody
-    public TestProfileDto postTestProfile(@RequestBody TestProfileDto newTestProfileDto) {
+    public TestProfileDto postTestProfile(@Valid @RequestBody TestProfileDto newTestProfileDto) {
         return testProfileService.createTestProfile(newTestProfileDto);
     }
 
