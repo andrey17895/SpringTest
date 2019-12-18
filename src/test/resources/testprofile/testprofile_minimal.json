@@ -1,0 +1,12 @@
+{
+  "requests": [
+    {
+      "url": "ya.ru",
+      "body": null,
+      "headers": {},
+      "params": {},
+      "method": "GET",
+      "perc": null
+    }
+  ]
+}

@@ -1,34 +1,33 @@
-package com.pflb.springtest.service.provider;
+package com.pflb.springtest.argument;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.pflb.springtest.generator.TestGenerator;
 import com.pflb.springtest.model.exception.ApplicationException;
 import com.pflb.springtest.model.exception.CustomExceptionType;
 import com.pflb.springtest.model.exception.JsonParsingException;
+import com.pflb.springtest.provider.HarDtoProvider;
 import org.junit.jupiter.params.provider.Arguments;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.stream.Stream;
 
-public class HapParserArgProvider {
-    public static Stream<Arguments> parse_Exception() throws IOException {
+public class HapParserServiceArgs {
+    public static Stream<Arguments> parse_thenThrowApplicationException() throws IOException {
         return Stream.of(
                 Arguments.of(
-                        TestGenerator.multipartFile(),
+                        HarDtoProvider.multipartFile("sintetic_good_get.json"),
                         JsonProcessingException.class,
                         JsonParsingException.class,
                         CustomExceptionType.JSON_PROCESSING_EXCEPTION
                 ),
                 Arguments.of(
-                        TestGenerator.multipartFile(),
+                        HarDtoProvider.multipartFile("sintetic_good_get.json"),
                         JsonMappingException.class,
                         JsonParsingException.class,
                         CustomExceptionType.JSON_MAPPING_EXCEPTION
                 ),
                 Arguments.of(
-                        TestGenerator.multipartFile(),
+                        HarDtoProvider.multipartFile("sintetic_good_get.json"),
                         IOException.class,
                         ApplicationException.class,
                         CustomExceptionType.FILE_IO_EXCEPTION
@@ -36,9 +35,12 @@ public class HapParserArgProvider {
         );
     }
 
-    public static Stream<MultipartFile> parse_Ok() throws IOException {
+    public static Stream<Arguments> parse_thenReturnDto() throws IOException {
         return Stream.of(
-                TestGenerator.multipartFile()
+                Arguments.of(
+                        HarDtoProvider.multipartFile("sintetic_good_get.json"),
+                        HarDtoProvider.dtoFromFile("/har/sintetic_good_get.json")
+                )
         );
     }
 

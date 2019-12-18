@@ -1,7 +1,7 @@
 package com.pflb.springtest.jms.consumer;
 
-import com.pflb.springtest.generator.TestGenerator;
 import com.pflb.springtest.model.dto.har.HarDto;
+import com.pflb.springtest.provider.HarDtoProvider;
 import com.pflb.springtest.service.IListenerService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,7 +22,7 @@ class RabbitMessagingListenerTest {
 
     @Test
     void recieve() {
-        HarDto harDto = TestGenerator.harDto("ya.ru", null);
+        HarDto harDto = HarDtoProvider.dtoFromFile("/har/har_valid_minimal.json");
         listener.recieve(harDto);
         verify(service).process(harDto);
     }

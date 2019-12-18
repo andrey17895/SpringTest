@@ -25,10 +25,8 @@ class ListenerServiceTest {
     @InjectMocks
     private ListenerService listenerService;
 
-
-
     @ParameterizedTest
-    @MethodSource("com.pflb.springtest.service.provider.ListenerArgProvider#process")
+    @MethodSource("com.pflb.springtest.argument.ListenerServiceArgs#process")
     void process(HarDto harDto, TestProfile testProfileEntity) {
         listenerService.process(harDto);
 
@@ -37,7 +35,4 @@ class ListenerServiceTest {
                 times(1)
         ).save(eq(testProfileEntity));
     }
-
-
-
 }

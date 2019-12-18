@@ -1,15 +1,15 @@
-package com.pflb.springtest.service.provider;
+package com.pflb.springtest.argument;
 
-import com.pflb.springtest.generator.RequestProvider;
+import com.pflb.springtest.provider.RequestProvider;
 import org.junit.jupiter.params.provider.Arguments;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.stream.Stream;
 
-public class RequestArgProvider {
+public class RequestServiceArgs {
 
-    public static Stream<Arguments> getAllRequests_Ok() {
+    public static Stream<Arguments> getAllRequests_thenReturnDtoList() {
         return Stream.of(
                 Arguments.of(
                         Collections.singletonList(RequestProvider.dto("ya.ru")),
@@ -32,7 +32,7 @@ public class RequestArgProvider {
         );
     }
 
-    public static Stream<Arguments> getAllRequestsByTestProfileId() {
+    public static Stream<Arguments> getAllRequestsByTestProfileId_thenReturnDtoList() {
         return Stream.of(
                 Arguments.of(
                         Collections.singletonList(RequestProvider.dto("ya.ru")),
@@ -54,7 +54,7 @@ public class RequestArgProvider {
                 )
         );
     }
-    public static Stream<Arguments> getRequestById_Ok() {
+    public static Stream<Arguments> getRequestById_thenReturnDto() {
         return Stream.of(
                 Arguments.of(
                         RequestProvider.dto("ya.ru"),
@@ -62,7 +62,7 @@ public class RequestArgProvider {
                 )
         );
     }
-    public static Stream<Arguments> createRequest_Ok() {
+    public static Stream<Arguments> createRequest_thenReturnDto() {
         return Stream.of(
                 Arguments.of(
                         RequestProvider.dto("ya.ru"),
@@ -71,7 +71,7 @@ public class RequestArgProvider {
         );
     }
 
-    public static Stream<Arguments> updateRequest_Ok() {
+    public static Stream<Arguments> updateRequest_thenReturnDto() {
         return Stream.of(
                 Arguments.of(
                         RequestProvider.dto("ya.ru"),

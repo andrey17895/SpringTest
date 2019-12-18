@@ -20,6 +20,7 @@ public class FileUploadController {
 
     @PostMapping(value = "/uploadFile")
     @ResponseBody
+    @ResponseStatus(HttpStatus.CREATED)
     public HistoryFileDto uploadFile(@NotNull @RequestParam(value = "file")MultipartFile file) {
         return historyFileService.processFile(file);
     }

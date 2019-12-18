@@ -48,6 +48,7 @@ public class TestProfileService implements ITestProfileService {
     @Override
     public TestProfileDto createTestProfile(TestProfileDto newTestProfileDto) {
         TestProfile newTestProfile =  modelMapper.map(newTestProfileDto, TestProfile.class);
+        newTestProfile.getRequests().forEach(request -> request.setTestProfile(newTestProfile));
         TestProfile responseEntity = testProfileRepository.save(newTestProfile);
         return modelMapper.map(responseEntity, TestProfileDto.class);
     }

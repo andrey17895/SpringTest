@@ -1,4 +1,4 @@
-package com.pflb.springtest.generator;
+package com.pflb.springtest.provider;
 
 import com.pflb.springtest.model.dto.profile.RequestDto;
 import com.pflb.springtest.model.entity.Request;
@@ -43,6 +43,6 @@ public class RequestProvider {
     }
 
     public static Request entity(Long id, String url) {
-        return entity(id, "", Collections.emptyMap(), url);
+        return entity(id, null, Collections.emptyMap(), url);
     }
 }

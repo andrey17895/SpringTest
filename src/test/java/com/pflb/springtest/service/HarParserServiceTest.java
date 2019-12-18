@@ -27,33 +27,38 @@ import static org.mockito.Mockito.when;
 class HarParserServiceTest {
 
     @Mock
-    private ObjectMapper objectMapper;// = Mockito.mock(ObjectMapper.class);;
+    private ObjectMapper objectMapper;
 
     @InjectMocks
     private HarParserService harParserService;
 
     @ParameterizedTest
-    @MethodSource("com.pflb.springtest.service.provider.HapParserArgProvider#parse_Ok")
+    @MethodSource("com.pflb.springtest.argument.HapParserServiceArgs#parse_thenReturnDto")
     @DisplayName("Valid Har")
-    void parse_Ok(MultipartFile file) throws IOException {
-        when(objectMapper.readValue(any(InputStream.class), eq(HarDto.class))).thenReturn(new HarDto());
-        assertEquals(new HarDto(), harParserService.parse(file));
+    void parse_thenReturnDto_whenValidJson(MultipartFile file, HarDto harDto) throws IOException {
+        when(objectMapper.readValue(any(InputStream.class), eq(HarDto.class))).thenReturn(harDto);
+
+        HarDto actualDto = harParserService.parse(file);
+
+        assertEquals(harDto, actualDto);
     }
 
     @ParameterizedTest
-    @MethodSource("com.pflb.springtest.service.provider.HapParserArgProvider#parse_Exception")
+    @MethodSource("com.pflb.springtest.argument.HapParserServiceArgs#parse_thenThrowApplicationException")
     @DisplayName("Catch exceptions")
-    void parse_Exception(
+    void parse_thenThrowApplicationException_whenInvalidJson(
             MultipartFile file,
             Class<Throwable> mapperException,
             Class<ApplicationException> exceptionClass,
             CustomExceptionType exceptionType
     ) throws IOException {
         when(objectMapper.readValue(any(InputStream.class), eq(HarDto.class))).thenThrow(mapperException);
-             ApplicationException ex = assertThrows(
-                exceptionClass,
-                ()->harParserService.parse(file)
+
+        ApplicationException ex = assertThrows(
+                    exceptionClass,
+                    ()->harParserService.parse(file)
         );
+
         assertEquals(exceptionType, ex.getType());
     }
 

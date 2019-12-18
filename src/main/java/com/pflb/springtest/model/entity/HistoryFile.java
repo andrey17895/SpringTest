@@ -17,9 +17,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Table(name = "history_file")
 @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
+@SequenceGenerator(name = "history_file_id_seq", sequenceName = "history_file_id_seq", allocationSize = 1)
 public class HistoryFile {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "history_file_id_seq")
     private Long id;
 
     @NonNull

@@ -1,7 +1,7 @@
-package com.pflb.springtest.service.provider;
+package com.pflb.springtest.argument;
 
-import com.pflb.springtest.generator.HistoryFileProvider;
-import com.pflb.springtest.generator.TestGenerator;
+import com.pflb.springtest.provider.HarDtoProvider;
+import com.pflb.springtest.provider.HistoryFileProvider;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.params.provider.Arguments;
 
@@ -10,9 +10,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.stream.Stream;
 
-public class HistoryFileArgProvider {
+public class HistoryFileServiceArgs {
     @NotNull
-    private static Stream<Arguments> getAllFiles() {
+    private static Stream<Arguments> getAllFiles_thenReturnDtoList() {
         return Stream.of(
                 Arguments.of(
                         Collections.singletonList(HistoryFileProvider.dto()),
@@ -35,12 +35,13 @@ public class HistoryFileArgProvider {
         );
     }
 
-    private static Stream<Arguments> processFileOk() throws IOException {
+    private static Stream<Arguments> processFile_thenReturnDto() throws IOException {
         return Stream.of(
                 Arguments.of(
                         HistoryFileProvider.dto("firefox", "1.2", "HarFile"),
                         HistoryFileProvider.entity(1L, "firefox", "1.2", "HarFile"),
-                        TestGenerator.multipartFile()
+                        HarDtoProvider.multipartFile("/har/har_valid_minimal.json"),
+                        HarDtoProvider.dtoFromFile("/har/har_valid_minimal.json")
                 )
         );
     }

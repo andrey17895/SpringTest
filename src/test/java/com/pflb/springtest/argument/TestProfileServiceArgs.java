@@ -1,15 +1,15 @@
-package com.pflb.springtest.service.provider;
+package com.pflb.springtest.argument;
 
-import com.pflb.springtest.generator.TestProfileProvider;
+import com.pflb.springtest.provider.TestProfileProvider;
 import org.junit.jupiter.params.provider.Arguments;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.stream.Stream;
 
-public class TestProfileArgProvider {
+public class TestProfileServiceArgs {
 
-    public static Stream<Arguments> getAllProfiles_Exists() {
+    public static Stream<Arguments> getAllProfiles_thenReturnListDto() {
         return Stream.of(
                 Arguments.of(
                         Collections.singletonList(TestProfileProvider.dto()),
@@ -27,7 +27,8 @@ public class TestProfileArgProvider {
                 )
         );
     }
-    public static Stream<Arguments> getTestProfileById_Exists() {
+
+    public static Stream<Arguments> getTestProfileById_thenReturnDto() {
         return Stream.of(
                 Arguments.of(
                         TestProfileProvider.dto(),
@@ -35,7 +36,7 @@ public class TestProfileArgProvider {
                 )
         );
     }
-    public static Stream<Arguments> createTestProfile() {
+    public static Stream<Arguments> createTestProfile_thenReturnDto() {
         return Stream.of(
                 Arguments.of(
                         TestProfileProvider.dto(),
@@ -43,7 +44,7 @@ public class TestProfileArgProvider {
                 )
         );
     }
-    public static Stream<Arguments> updateTestProfile_Exists() {
+    public static Stream<Arguments> updateTestProfile_thenReturnDto() {
         return Stream.of(
                 Arguments.of(
                         TestProfileProvider.dto(),
