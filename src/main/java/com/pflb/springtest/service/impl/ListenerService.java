@@ -10,6 +10,7 @@ import com.pflb.springtest.service.IListenerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,7 +35,7 @@ public class ListenerService implements IListenerService {
                     return Request.builder()
                             .url(harRequestDto.getUrl())
                             .body  (harRequestDto.getPostData() != null ? harRequestDto.getPostData().getText() : null)
-                            .params(harRequestDto.getPostData() != null ? harRequestDto.getPostData().getParamsMap() : null)
+                            .params(harRequestDto.getPostData() != null ? harRequestDto.getPostData().getParamsMap() : Collections.emptyMap())
                             .headers(harRequestDto.getHeadersMap())
                             .method(harRequestDto.getMethod())
                             .testProfile(testProfile)

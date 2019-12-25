@@ -62,6 +62,7 @@ class RequestServiceTest {
     void getAllRequestsByTestProfileId_thenReturnDtoList_whenTestProfileExists(List<RequestDto> requestsDto, List<Request> requests) {
 
         when(requestRepository.findByTestProfileId(anyLong())).thenReturn(requests);
+        when(testProfileRepository.existsById(anyLong())).thenReturn(true);
         when(modelMapper.map(eq(requests), eq(new TypeToken<List<RequestDto>>() {}.getType())))
                 .thenReturn(requestsDto);
 

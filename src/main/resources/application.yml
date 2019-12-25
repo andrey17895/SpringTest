@@ -18,7 +18,13 @@ spring:
     password: postgres
   liquibase:
     changelog: "classpath:db/db.changelog-master.yaml"
-    drop-first: true
+    drop-first: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus,metrics
 
 ---
 spring:
@@ -29,3 +35,5 @@ spring:
     url: "jdbc:postgresql://localhost:5432/e2etest"
     username: testuser
     password: postgres
+  liquibase:
+    drop-first: true

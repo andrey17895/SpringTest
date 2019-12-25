@@ -29,7 +29,7 @@ public class TestProfileProvider {
         return TestProfile.builder()
                 .id(id)
                 .requests(Collections.singletonList(
-                RequestProvider.entity(id, null, Collections.emptyMap(), "ya.ru")
+                    RequestProvider.entity(id, null, Collections.emptyMap(), "ya.ru")
                 ))
                 .build();
     }

@@ -1,6 +1,5 @@
 package com.pflb.springtest.controller;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -26,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @Sql("/db/dbsetup.sql")
 @Transactional
-@Disabled
+//@Disabled
 class TestProfileControllerTest {
 
     @Autowired
