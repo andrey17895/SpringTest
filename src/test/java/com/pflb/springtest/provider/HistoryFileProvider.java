@@ -1,4 +1,4 @@
-package com.pflb.springtest.generator;
+package com.pflb.springtest.provider;
 
 import com.pflb.springtest.model.dto.profile.HistoryFileDto;
 import com.pflb.springtest.model.entity.HistoryFile;
@@ -12,7 +12,7 @@ public class HistoryFileProvider {
                 .browser(browser)
                 .name(harFile)
                 .version(version)
-                .content(HarDtoProvider.harDto(0, ""))
+                .content(HarDtoProvider.dtoFromFile("/har/har_valid_minimal.json"))
                 .uploadTime(LocalDateTime.MIN)
                 .build();
     }
@@ -27,7 +27,7 @@ public class HistoryFileProvider {
                 .browser(browser)
                 .name(harFile)
                 .version(version)
-                .content(HarDtoProvider.harDto(0, ""))
+                .content(HarDtoProvider.dtoFromFile("/har/har_valid_minimal.json"))
                 .uploadTime(LocalDateTime.MIN)
                 .build();
     }

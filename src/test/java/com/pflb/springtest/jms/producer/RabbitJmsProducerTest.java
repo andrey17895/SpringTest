@@ -1,8 +1,8 @@
 package com.pflb.springtest.jms.producer;
 
 import com.pflb.springtest.configuration.MqConsumerProperties;
-import com.pflb.springtest.generator.TestGenerator;
 import com.pflb.springtest.model.dto.har.HarDto;
+import com.pflb.springtest.provider.HarDtoProvider;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -31,7 +31,7 @@ class RabbitJmsProducerTest {
     void sendMessage() {
         when(mqConsumerProperties.getQueueName()).thenReturn("queue");
 
-        jmsProducer.sendMessage(TestGenerator.harDto("ya.ru", null));
+        jmsProducer.sendMessage(HarDtoProvider.dtoFromFile("/har/har_valid_minimal.json"));
         verify(rabbitTemplate).convertAndSend(eq("queue"), any(HarDto.class));
     }
 }

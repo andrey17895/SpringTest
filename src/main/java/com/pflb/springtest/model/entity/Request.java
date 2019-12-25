@@ -13,9 +13,10 @@ import java.util.Map;
 @AllArgsConstructor
 @ToString(exclude = {"testProfile"})
 @Table(name = "request")
+@SequenceGenerator(name = "request_id_seq", sequenceName = "request_id_seq", allocationSize = 1)
 public class Request {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "request_id_seq")
     private Long id;
 
     private String url;

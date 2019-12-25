@@ -1,81 +1,119 @@
 package com.pflb.springtest.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.pflb.springtest.model.dto.profile.TestProfileDto;
-import com.pflb.springtest.model.entity.TestProfile;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.*;
+import org.springframework.http.MediaType;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Collection;
-import java.util.stream.Collectors;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.core.Is.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
+@AutoConfigureMockMvc
+@Sql("/db/dbsetup.sql")
 @Transactional
 @Disabled
 class TestProfileControllerTest {
-    @Autowired
-    private TestRestTemplate testRestTemplate;
 
     @Autowired
-    private TestProfileController testProfileController;
-    @Autowired
-    private ObjectMapper objectMapper;
+    private MockMvc mockMvc;
+
+    @ParameterizedTest
+    @MethodSource("com.pflb.springtest.argument.TestProfileControllerArgs#testProfile_thenReturnDto")
+    @Rollback
+    void postTestProfile_thenReturnDto_whenValid(String requestBody, String expectedResponseBody) throws Exception {
+        mockMvc.perform(post("/testProfile").contentType(MediaType.APPLICATION_JSON).content(requestBody))
+                .andExpect(status().isOk())
+                .andExpect(content().string(expectedResponseBody));
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.pflb.springtest.argument.TestProfileControllerArgs#testProfile_thenReturnErrorDto")
+    @Rollback
+    void postTestProfile_thenReturnErrorDto_whenInalid(String requestBody, String expectedResponseBody) throws Exception {
+        mockMvc.perform(post("/testProfile").contentType(MediaType.APPLICATION_JSON).content(requestBody))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string(expectedResponseBody));
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.pflb.springtest.argument.TestProfileControllerArgs#testProfile_thenReturnDto")
+    @Rollback
+    void putTestProfile_thenReturnDto_whenTestProfileExistsAndRequestValid(String requestBody, String expectedResponseBody) throws Exception {
+        mockMvc.perform(put("/testProfile/1").contentType(MediaType.APPLICATION_JSON).content(requestBody))
+                .andExpect(status().isOk())
+                .andExpect(content().string(expectedResponseBody));
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.pflb.springtest.argument.TestProfileControllerArgs#testProfile_thenReturnErrorDto")
+    @Rollback
+    void putTestProfile_thenReturnDto_whenTestProfileExistsAndRequestInalid(String requestBody, String expectedResponseBody) throws Exception {
+        mockMvc.perform(put("/testProfile/1").contentType(MediaType.APPLICATION_JSON).content(requestBody))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string(expectedResponseBody));
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.pflb.springtest.argument.TestProfileControllerArgs#getAllProfiles_thenReturnDtoList")
+    @Rollback
+    void getAllProfiles_thenReturnDtoList(String expectedResponseBody) throws Exception {
+        mockMvc.perform(get("/testProfile"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(content().string(expectedResponseBody));
+    }
 
     @Test
     @Rollback
-    void postTestProfile() throws IOException {
-        HttpEntity<String> entity = getResourceAsHttpEntity("/testprofile/testprofile.json");
-        ResponseEntity<TestProfileDto> response = testRestTemplate.postForEntity("/testProfile", entity, TestProfileDto.class);
-        //TODO Добавить валидацию ответа
+    void getTestProfileById_thenReturnErrorDto_whenTestProfileNotExists() throws Exception {
+        mockMvc.perform(get("/testProfile/404"))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.type", is("TEST_PROFILE_NOT_FOUND")))
+                .andExpect(jsonPath("$.id", is(not(empty()))));
     }
 
-    @Test
-    void getAllProfiles() {
-//        ResponseEntity<Collection<TestProfile>> response = testRestTemplate.getForEntity("/testProfile", new ParameterizedTypeReference<List<TestProfile>>(){});
-        ResponseEntity<Collection<TestProfile>> response = testRestTemplate.exchange("/testProfile", HttpMethod.GET, null, new ParameterizedTypeReference<Collection<TestProfile>>(){});
-        //TODO Добавить валидацию ответа
-
-
+    @ParameterizedTest
+    @MethodSource("com.pflb.springtest.argument.TestProfileControllerArgs#getTestProfileById_thenReturnDto")
+    @Rollback
+    void getTestProfileById_thenReturnDto_whenTestProfileExists(String expectedResponseBody) throws Exception {
+        mockMvc.perform(get("/testProfile/1"))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(content().string(expectedResponseBody));
     }
 
-    @Test
-    void getTestProfileById() {
+    @ParameterizedTest
+    @MethodSource("com.pflb.springtest.argument.TestProfileControllerArgs#putTestProfile_thenReturnErrorDto")
+    @Rollback
+    void putTestProfile_thenReturnErrorDto_whenTestProfileNotExists(String requestBody) throws Exception {
+        mockMvc.perform(
+                put("/testProfile/4")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody)
+        )
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.type", is("TEST_PROFILE_NOT_FOUND")));
     }
 
     @Test
     @Rollback
-    void putTestProfile() {
-        HttpEntity<String> entity = getResourceAsHttpEntity("/testprofile/testprofile.json");
-        ResponseEntity<TestProfileDto> response = testRestTemplate.postForEntity("/testProfile", entity, TestProfileDto.class);
-        //TODO Добавить валидацию ответа
-    }
-
-    @Test
-    void deleteAll() {
-    }
-
-    @Test
-    void delete() {
-    }
-
-    private HttpEntity<String> getResourceAsHttpEntity(String resource) {
-        InputStreamReader is = new InputStreamReader(this.getClass().getResourceAsStream(resource));
-        BufferedReader br = new BufferedReader(is);
-        String requestJson = br.lines().collect(Collectors.joining());
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        return new HttpEntity<>(requestJson, headers);
+    void deleteAll() throws Exception {
+        mockMvc.perform(delete("/testProfile"))
+                .andExpect(status().isOk());
     }
 }

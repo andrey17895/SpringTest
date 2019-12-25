@@ -1,7 +1,7 @@
 package com.pflb.springtest.repository;
 
-import com.pflb.springtest.generator.TestGenerator;
 import com.pflb.springtest.model.entity.HistoryFile;
+import com.pflb.springtest.provider.HarDtoProvider;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -15,6 +15,8 @@ import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+//import com.pflb.springtest.provider.TestGenerator;
+
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @AutoConfigureTestDatabase(replace= Replace.NONE)
@@ -25,7 +27,7 @@ class HistoryFileRepositoryTest {
         HistoryFile historyFile = HistoryFile.builder()
                 .id(null)
                 .name("Name")
-                .content(TestGenerator.harDto("ya.ru", null))
+                .content(HarDtoProvider.dtoFromFile("/har/har_valid_minimal.json"))
                 .browser("browser")
                 .version("1.2")
                 .uploadTime(LocalDateTime.now())

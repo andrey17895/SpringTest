@@ -19,6 +19,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,44 +44,49 @@ class RequestServiceTest {
 
     @ParameterizedTest
     @DisplayName("Get all. Ok")
-    @MethodSource("com.pflb.springtest.service.provider.RequestArgProvider#getAllRequests_Ok")
-    void getAllRequests_Ok(List<RequestDto> requestsDto, List<Request> requests) {
-
+    @MethodSource("com.pflb.springtest.argument.RequestServiceArgs#getAllRequests_thenReturnDtoList")
+    void getAllRequests_thenReturnDtoList(List<RequestDto> requestsDto, List<Request> requests) {
         when(requestRepository.findAll())
                 .thenReturn(requests);
         when(modelMapper.map(eq(requests), eq(new TypeToken<List<RequestDto>>() {}.getType())))
                 .thenReturn(requestsDto);
 
-        assertEquals(requestsDto, requestService.getAllRequests());
+        Collection<RequestDto> actualRequests = requestService.getAllRequests();
+
+        assertEquals(requestsDto, actualRequests);
     }
 
     @ParameterizedTest
     @DisplayName("Get all by test profile id. Empty")
-    @MethodSource("com.pflb.springtest.service.provider.RequestArgProvider#getAllRequestsByTestProfileId")
-    void getAllRequestsByTestProfileId(List<RequestDto> requestsDto, List<Request> requests) {
+    @MethodSource("com.pflb.springtest.argument.RequestServiceArgs#getAllRequestsByTestProfileId_thenReturnDtoList")
+    void getAllRequestsByTestProfileId_thenReturnDtoList_whenTestProfileExists(List<RequestDto> requestsDto, List<Request> requests) {
+
         when(requestRepository.findByTestProfileId(anyLong())).thenReturn(requests);
         when(modelMapper.map(eq(requests), eq(new TypeToken<List<RequestDto>>() {}.getType())))
                 .thenReturn(requestsDto);
-        assertEquals(requestsDto, requestService.getAllRequests(1L));
+
+        Collection<RequestDto> actualDtoList = requestService.getAllRequests(1L);
+
+        assertEquals(requestsDto, actualDtoList);
     }
 
 
     @Test
     @DisplayName("Get request by id. Test profile not exists.")
-    void getRequestById_testProfileNotExists() {
+    void getRequestById_thenThrowResourceNotFound_whenTestProfileNotExists() {
         when(testProfileRepository.existsById(anyLong())).thenReturn(false);
 
         ResourceNotFoundException ex = assertThrows(
                 ResourceNotFoundException.class,
                 () -> requestService.getRequestById(1L, 1L)
         );
-        assertEquals(CustomExceptionType.TEST_PROFILE_NOT_FOUND, ex.getType());
 
+        assertEquals(CustomExceptionType.TEST_PROFILE_NOT_FOUND, ex.getType());
     }
 
     @Test
     @DisplayName("Get request by id. Request not exists.")
-    void getRequestById_RequestNotExists() {
+    void getRequestById_thenThrowResourceNotFound_whenRequestNotExists() {
         when(testProfileRepository.existsById(anyLong())).thenReturn(true);
         when(requestRepository.findByIdAndTestProfileId(anyLong(), anyLong()))
                 .thenReturn(Optional.empty());
@@ -89,13 +95,14 @@ class RequestServiceTest {
                 ResourceNotFoundException.class,
                 () -> requestService.getRequestById(1L, 1L)
         );
+
         assertEquals(CustomExceptionType.REQUEST_NOT_FOUND, ex.getType());
     }
 
     @ParameterizedTest
     @DisplayName("Get request by id. Ok")
-    @MethodSource("com.pflb.springtest.service.provider.RequestArgProvider#getRequestById_Ok")
-    void getRequestById_Ok(RequestDto requestDto, Request request) {
+    @MethodSource("com.pflb.springtest.argument.RequestServiceArgs#getRequestById_thenReturnDto")
+    void getRequestById_thenReturnDto_whenExists(RequestDto requestDto, Request request) {
         when(testProfileRepository.existsById(anyLong())).thenReturn(true);
         when(requestRepository.findByIdAndTestProfileId(anyLong(), anyLong()))
                 .thenReturn(Optional.of(request));
@@ -114,50 +121,53 @@ class RequestServiceTest {
 
     @ParameterizedTest
     @DisplayName("Create. Ok")
-    @MethodSource("com.pflb.springtest.service.provider.RequestArgProvider#createRequest_Ok")
-    void createRequest_Ok(RequestDto requestDto, Request request) {
-        TestProfile testProfile = new TestProfile();
+    @MethodSource("com.pflb.springtest.argument.RequestServiceArgs#createRequest_thenReturnDto")
+    void createRequest_thenReturnDto_whenValid(RequestDto requestDto, Request request) {
         when(modelMapper.map(eq(requestDto), eq(Request.class)))
                 .thenReturn(request);
         when(testProfileRepository.findById(1L))
-                .thenReturn(Optional.of(testProfile));
+                .thenReturn(Optional.of(new TestProfile()));
         when(requestRepository.save(any(Request.class)))
                 .thenReturn(request);
         when(modelMapper.map(eq(request), eq(RequestDto.class)))
                 .thenReturn(requestDto);
 
-        assertEquals(requestDto, requestService.createRequest(1L, requestDto));
+        RequestDto actualDto = requestService.createRequest(1L, requestDto);
+
+        assertEquals(requestDto, actualDto);
     }
 
     @Test
     @DisplayName("Create. No test profile")
-    void createRequest_TestProfileNotFound() {
+    void createRequest_thenThrowResourceNotFound_whenTestProfileNotFound() {
         when(testProfileRepository.findById(1L)).thenReturn(Optional.empty());
 
         ResourceNotFoundException ex = assertThrows(
                 ResourceNotFoundException.class,
                 () -> requestService.createRequest(1L, new RequestDto())
         );
+
         assertEquals(CustomExceptionType.TEST_PROFILE_NOT_FOUND, ex.getType());
     }
 
     @Test
     @DisplayName("Create. No test profile")
-    void createRequest_RequestNotFound() {
+    void createRequest_thenThrowResourceNotFound_whenRequestNotFound() {
         when(testProfileRepository.findById(1L)).thenReturn(Optional.empty());
 
         ResourceNotFoundException ex = assertThrows(
                 ResourceNotFoundException.class,
                 () -> requestService.createRequest(1L, new RequestDto())
         );
+
         assertEquals(CustomExceptionType.TEST_PROFILE_NOT_FOUND, ex.getType());
     }
 
 
     @ParameterizedTest
     @DisplayName("Update. Ok")
-    @MethodSource("com.pflb.springtest.service.provider.RequestArgProvider#updateRequest_Ok")
-    void updateRequest_Ok(RequestDto requestDto, Request request) {
+    @MethodSource("com.pflb.springtest.argument.RequestServiceArgs#updateRequest_thenReturnDto")
+    void updateRequest_thenReturnDto_whenExists(RequestDto requestDto, Request request) {
 
         when(testProfileRepository.findById(1L)).thenReturn(Optional.of(new TestProfile()));
         when(requestRepository.existsById(1L)).thenReturn(true);
@@ -167,12 +177,14 @@ class RequestServiceTest {
         when(modelMapper.map(eq(request), eq(RequestDto.class)))
                 .thenReturn(requestDto);
 
-        assertEquals(requestDto, requestService.updateRequest(1L, 1L, requestDto));
+        RequestDto actualDto = requestService.updateRequest(1L, 1L, requestDto);
+
+        assertEquals(requestDto, actualDto);
     }
 
     @Test
     @DisplayName("Update. No test profile")
-    void updateRequest_RequestNotFound() {
+    void updateRequest_thenThrowResourseNotFound_whenRequestNotFound() {
         when(testProfileRepository.findById(1L)).thenReturn(Optional.of(new TestProfile()));
         when(requestRepository.existsById(1L)).thenReturn(false);
 
@@ -180,6 +192,7 @@ class RequestServiceTest {
                 ResourceNotFoundException.class,
                 () -> requestService.updateRequest(1L, 1L, new RequestDto())
         );
+
         assertEquals(CustomExceptionType.REQUEST_NOT_FOUND, ex.getType());
     }
 }

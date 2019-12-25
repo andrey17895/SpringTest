@@ -1,60 +1,74 @@
 package com.pflb.springtest.controller;
 
-import com.pflb.springtest.model.dto.profile.HistoryFileDto;
 import com.pflb.springtest.service.IHistoryFileService;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.List;
-
-import static org.hamcrest.Matchers.isA;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 @Disabled
+@AutoConfigureMockMvc
 class FileUploadControllerTest {
 
     @Autowired
     private TestRestTemplate testRestTemplate;
     @Autowired
     private IHistoryFileService historyFileService;
+    @Autowired
+    private MockMvc mockMvc;
 
 
-    @Test
-    void uploadFile() throws Exception {
-        LinkedMultiValueMap<String, Object> parameters = new LinkedMultiValueMap<String, Object>();
-        parameters.add("file", new ClassPathResource("har/sintetic_good_get.json"));
+    @ParameterizedTest
+    @MethodSource("com.pflb.springtest.argument.HistoryFileControllerArgs#uploadFile_thenReturnDto")
+    void uploadFile_thenReturnDto_whenValid(String filePath) throws Exception {
 
-        ResponseEntity<HistoryFileDto> response = testRestTemplate.postForEntity("/uploadFile", parameters, HistoryFileDto.class);
+        MockMultipartFile file = new MockMultipartFile("file", this.getClass().getResourceAsStream(filePath));
 
-        assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertThat(response.getBody(), isA(HistoryFileDto.class));
-        //TODO дополнить валидацию ответа
+        mockMvc.perform(
+                    multipart("/uploadFile")
+                        .file(file)
+                )
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.version", is("1.2")))
+                .andExpect(jsonPath("$.browser", is("Firefox")));
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.pflb.springtest.argument.HistoryFileControllerArgs#uploadFile_thenReturnErrorDto")
+    void uploadFile_thenReturnErrorDto_whenInvalid(String filePath, String expectedExceptionType) throws Exception {
+        MockMultipartFile file = new MockMultipartFile("file", this.getClass().getResourceAsStream(filePath));
+
+        mockMvc.perform(
+                multipart("/uploadFile")
+                        .file(file)
+        )
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.type", is(expectedExceptionType)));
     }
 
     @Test
     void getFiles() throws Exception {
-        ResponseEntity<List<HistoryFileDto>> response = testRestTemplate.exchange("/uploadFile", HttpMethod.GET, null, new ParameterizedTypeReference<List<HistoryFileDto>>(){});
-        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        mockMvc.perform(get("/uploadFile"))
+                .andExpect(status().isOk());
     }
 
     @Test
     void deleteAll() throws Exception {
-
-        ResponseEntity<String> response = testRestTemplate.exchange("/uploadFile", HttpMethod.DELETE, null, String.class);
-
-        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        mockMvc.perform(delete("/uploadFile"))
+                .andExpect(status().isOk());
     }
 }

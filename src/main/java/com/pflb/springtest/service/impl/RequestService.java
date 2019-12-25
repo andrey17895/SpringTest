@@ -46,6 +46,9 @@ public class RequestService implements IRequestService {
 
     @Override
     public Collection<RequestDto> getAllRequests(Long testProfileId) {
+        if (!testProfileRepository.existsById(testProfileId)) {
+            throw new ResourceNotFoundException(CustomExceptionType.TEST_PROFILE_NOT_FOUND, testProfileId);
+        }
         Iterable<Request> requestEntityIterable = requestRepository.findByTestProfileId(testProfileId);
         return modelMapper.map(requestEntityIterable, new TypeToken<List<RequestDto>>() {}.getType());
     }

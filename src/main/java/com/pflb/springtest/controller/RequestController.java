@@ -31,7 +31,7 @@ public class RequestController {
 
     @GetMapping(value = "/testProfile/{testProfileId}/requests")
     @ResponseBody
-    public Collection<RequestDto> getAllRequests(@PathVariable Long testProfileId) {
+    public Collection<RequestDto> getAllRequestsByTestProfileId(@PathVariable Long testProfileId) {
         return requestService.getAllRequests(testProfileId);
     }
 
