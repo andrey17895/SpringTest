@@ -19,7 +19,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,7 +50,7 @@ class RequestServiceTest {
         when(modelMapper.map(eq(requests), eq(new TypeToken<List<RequestDto>>() {}.getType())))
                 .thenReturn(requestsDto);
 
-        Collection<RequestDto> actualRequests = requestService.getAllRequests();
+        List<RequestDto> actualRequests = requestService.getAllRequests();
 
         assertEquals(requestsDto, actualRequests);
     }
@@ -66,7 +65,7 @@ class RequestServiceTest {
         when(modelMapper.map(eq(requests), eq(new TypeToken<List<RequestDto>>() {}.getType())))
                 .thenReturn(requestsDto);
 
-        Collection<RequestDto> actualDtoList = requestService.getAllRequests(1L);
+        List<RequestDto> actualDtoList = requestService.getAllRequests(1L);
 
         assertEquals(requestsDto, actualDtoList);
     }

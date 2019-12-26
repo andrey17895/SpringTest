@@ -3,12 +3,12 @@ package com.pflb.springtest.service;
 import com.pflb.springtest.model.dto.profile.HistoryFileDto;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Collection;
+import java.util.List;
 
 public interface IHistoryFileService {
     HistoryFileDto processFile(MultipartFile file);
 
-    Collection<HistoryFileDto> getAllFiles();
+    List<HistoryFileDto> getAllFiles();
 
     void deleteAllFiles();
 }

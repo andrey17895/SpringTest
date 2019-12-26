@@ -19,7 +19,6 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Collection;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -63,11 +62,11 @@ public class HistoryFileServiceTest {
     @ParameterizedTest
     @DisplayName("Get all files from repository")
     @MethodSource("com.pflb.springtest.argument.HistoryFileServiceArgs#getAllFiles_thenReturnDtoList")
-    public void getAllFiles_thenReturnDtoList(Collection<HistoryFileDto> historyFileDtos, Collection<HistoryFile> historyFiles) {
+    public void getAllFiles_thenReturnDtoList(List<HistoryFileDto> historyFileDtos, List<HistoryFile> historyFiles) {
         when(fileRepository.findAll()).thenReturn(historyFiles);
         when(mapper.map(any(), eq(new TypeToken<List<HistoryFileDto>>() {}.getType()))).thenReturn(historyFileDtos);
 
-        Collection<HistoryFileDto> actualDtoList = historyFileServiceImpl.getAllFiles();
+        List<HistoryFileDto> actualDtoList = historyFileServiceImpl.getAllFiles();
         assertEquals(historyFileDtos, actualDtoList);
     }
 

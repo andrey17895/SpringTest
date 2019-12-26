@@ -28,7 +28,9 @@ public class ListenerService implements IListenerService {
     @Override
     public void process(HarDto message) {
         TestProfile testProfile = new TestProfile();
+
         List<HarEntryDto> entries = message.getLog().getEntries();
+
         List<Request> requestEntities = entries.stream()
                 .map(entry -> {
                     HarRequestDto harRequestDto = entry.getRequest();
@@ -42,6 +44,7 @@ public class ListenerService implements IListenerService {
                             .build();
                 }).collect(Collectors.toList());
         testProfile.setRequests(requestEntities);
+
         testProfileRepository.save(testProfile);
     }
 }

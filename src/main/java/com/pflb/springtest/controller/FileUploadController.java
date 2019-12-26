@@ -2,11 +2,13 @@ package com.pflb.springtest.controller;
 
 import com.pflb.springtest.model.dto.profile.HistoryFileDto;
 import com.pflb.springtest.service.IHistoryFileService;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @RestController
 public class FileUploadController {
@@ -27,7 +29,7 @@ public class FileUploadController {
 
     @GetMapping(value = "/uploadFile")
     @ResponseBody
-    public Iterable<HistoryFileDto> getFiles() {
+    public List<HistoryFileDto> getFiles() {
         return historyFileService.getAllFiles();
     }
 

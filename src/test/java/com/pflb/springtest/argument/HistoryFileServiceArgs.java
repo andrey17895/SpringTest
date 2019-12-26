@@ -2,9 +2,9 @@ package com.pflb.springtest.argument;
 
 import com.pflb.springtest.provider.HarDtoProvider;
 import com.pflb.springtest.provider.HistoryFileProvider;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.params.provider.Arguments;
 
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;

@@ -13,7 +13,6 @@ import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -34,8 +33,10 @@ public class RequestService implements IRequestService {
 
 
     @Override
-    public Collection<RequestDto> getAllRequests() {
-        Iterable<Request> requestEntityIterable = requestRepository.findAll();
+    public List<RequestDto> getAllRequests() {
+
+        List<Request> requestEntityIterable = requestRepository.findAll();
+
         return modelMapper.map(requestEntityIterable, new TypeToken<List<RequestDto>>() {}.getType());
     }
 
@@ -45,11 +46,14 @@ public class RequestService implements IRequestService {
     }
 
     @Override
-    public Collection<RequestDto> getAllRequests(Long testProfileId) {
+    public List<RequestDto> getAllRequests(Long testProfileId) {
+
         if (!testProfileRepository.existsById(testProfileId)) {
             throw new ResourceNotFoundException(CustomExceptionType.TEST_PROFILE_NOT_FOUND, testProfileId);
         }
-        Iterable<Request> requestEntityIterable = requestRepository.findByTestProfileId(testProfileId);
+
+        List<Request> requestEntityIterable = requestRepository.findByTestProfileId(testProfileId);
+
         return modelMapper.map(requestEntityIterable, new TypeToken<List<RequestDto>>() {}.getType());
     }
 
@@ -61,6 +65,7 @@ public class RequestService implements IRequestService {
         if (!testProfileRepository.existsById(testProfileId)) {
             throw new ResourceNotFoundException(CustomExceptionType.TEST_PROFILE_NOT_FOUND, testProfileId);
         }
+
         Request request = requestRepository.findByIdAndTestProfileId(requestId, testProfileId)
                 .orElseThrow(() -> new ResourceNotFoundException(CustomExceptionType.REQUEST_NOT_FOUND, requestId));
 
@@ -74,8 +79,10 @@ public class RequestService implements IRequestService {
     ) {
         TestProfile testProfile = testProfileRepository.findById(testProfileId)
                 .orElseThrow(() -> new ResourceNotFoundException(CustomExceptionType.TEST_PROFILE_NOT_FOUND, testProfileId));
+
         Request request = modelMapper.map(requestDto, Request.class);
         request.setTestProfile(testProfile);
+
         return modelMapper.map(requestRepository.save(request), RequestDto.class);
     }
 
@@ -87,12 +94,16 @@ public class RequestService implements IRequestService {
     ) {
         TestProfile testProfile = testProfileRepository.findById(testProfileId)
                 .orElseThrow(() -> new ResourceNotFoundException(CustomExceptionType.TEST_PROFILE_NOT_FOUND, testProfileId));
+
         if (!requestRepository.existsById(requestId)) {
             throw new ResourceNotFoundException(CustomExceptionType.REQUEST_NOT_FOUND, requestId);
         }
+
         Request newRequest = modelMapper.map(newRequestDto, Request.class);
         newRequest.setTestProfile(testProfile);
         newRequest.setId(requestId);
+
         return modelMapper.map(requestRepository.save(newRequest), RequestDto.class);
     }
+
 }

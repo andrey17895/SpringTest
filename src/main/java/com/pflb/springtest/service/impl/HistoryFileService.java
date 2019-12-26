@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -36,7 +35,9 @@ public class HistoryFileService implements IHistoryFileService {
 
     @Override
     public HistoryFileDto processFile(MultipartFile file) {
+
         HarDto harDto = harParserService.parse(file);
+
         HistoryFile historyFile = HistoryFile.builder()
                 .name("HarFile")
                 .content(harDto)
@@ -44,19 +45,20 @@ public class HistoryFileService implements IHistoryFileService {
                 .version(harDto.getLog().getVersion())
                 .browser(harDto.getLog().getBrowser() != null ? harDto.getLog().getBrowser().getName() : null)
                 .build();
+
         HistoryFile response = fileRepository.save(historyFile);
-        sendJms(response.getContent());
+
+        jmsProducer.sendMessage(response.getContent());
+
         return mapper.map(response, HistoryFileDto.class);
 
     }
 
-    private void sendJms(HarDto message) {
-        jmsProducer.sendMessage(message);
-    }
-
     @Override
-    public Collection<HistoryFileDto> getAllFiles() {
-        Iterable<HistoryFile> fileEntities = fileRepository.findAll();
+    public List<HistoryFileDto> getAllFiles() {
+
+        List<HistoryFile> fileEntities = fileRepository.findAll();
+
         return mapper.map(fileEntities, new TypeToken<List<HistoryFileDto>>() {}.getType());
     }
 

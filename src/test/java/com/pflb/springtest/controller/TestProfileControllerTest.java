@@ -13,8 +13,6 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.hamcrest.Matchers.empty;
-import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.Is.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -82,8 +80,7 @@ class TestProfileControllerTest {
     void getTestProfileById_thenReturnErrorDto_whenTestProfileNotExists() throws Exception {
         mockMvc.perform(get("/testProfile/404"))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.type", is("TEST_PROFILE_NOT_FOUND")))
-                .andExpect(jsonPath("$.id", is(not(empty()))));
+                .andExpect(jsonPath("$.type", is("TEST_PROFILE_NOT_FOUND")));
     }
 
     @ParameterizedTest

@@ -2,14 +2,14 @@ package com.pflb.springtest.service;
 
 import com.pflb.springtest.model.dto.profile.RequestDto;
 
-import java.util.Collection;
+import java.util.List;
 
 public interface IRequestService {
-    Collection<RequestDto> getAllRequests();
+    List<RequestDto> getAllRequests();
 
     void deleteAll();
 
-    Collection<RequestDto> getAllRequests(Long testProfileId);
+    List<RequestDto> getAllRequests(Long testProfileId);
 
     RequestDto getRequestById(
             Long testProfileId,

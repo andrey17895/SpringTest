@@ -2,11 +2,11 @@ package com.pflb.springtest.controller;
 
 import com.pflb.springtest.model.dto.profile.RequestDto;
 import com.pflb.springtest.service.IRequestService;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
+import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @RestController
 public class RequestController {
@@ -20,7 +20,7 @@ public class RequestController {
 
     @GetMapping(value = "/requests")
     @ResponseBody
-    public Collection<RequestDto> getAllRequests() {
+    public List<RequestDto> getAllRequests() {
         return requestService.getAllRequests();
     }
 
@@ -31,7 +31,7 @@ public class RequestController {
 
     @GetMapping(value = "/testProfile/{testProfileId}/requests")
     @ResponseBody
-    public Collection<RequestDto> getAllRequestsByTestProfileId(@PathVariable Long testProfileId) {
+    public List<RequestDto> getAllRequestsByTestProfileId(@PathVariable Long testProfileId) {
         return requestService.getAllRequests(testProfileId);
     }
 
