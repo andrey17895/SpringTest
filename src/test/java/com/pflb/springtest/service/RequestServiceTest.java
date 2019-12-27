@@ -3,8 +3,8 @@ package com.pflb.springtest.service;
 import com.pflb.springtest.model.dto.profile.RequestDto;
 import com.pflb.springtest.model.entity.Request;
 import com.pflb.springtest.model.entity.TestProfile;
+import com.pflb.springtest.model.exception.ApplicationException;
 import com.pflb.springtest.model.exception.CustomExceptionType;
-import com.pflb.springtest.model.exception.ResourceNotFoundException;
 import com.pflb.springtest.repository.RequestRepository;
 import com.pflb.springtest.repository.TestProfileRepository;
 import com.pflb.springtest.service.impl.RequestService;
@@ -45,6 +45,7 @@ class RequestServiceTest {
     @DisplayName("Get all. Ok")
     @MethodSource("com.pflb.springtest.argument.RequestServiceArgs#getAllRequests_thenReturnDtoList")
     void getAllRequests_thenReturnDtoList(List<RequestDto> requestsDto, List<Request> requests) {
+
         when(requestRepository.findAll())
                 .thenReturn(requests);
         when(modelMapper.map(eq(requests), eq(new TypeToken<List<RequestDto>>() {}.getType())))
@@ -74,10 +75,11 @@ class RequestServiceTest {
     @Test
     @DisplayName("Get request by id. Test profile not exists.")
     void getRequestById_thenThrowResourceNotFound_whenTestProfileNotExists() {
+
         when(testProfileRepository.existsById(anyLong())).thenReturn(false);
 
-        ResourceNotFoundException ex = assertThrows(
-                ResourceNotFoundException.class,
+        ApplicationException ex = assertThrows(
+                ApplicationException.class,
                 () -> requestService.getRequestById(1L, 1L)
         );
 
@@ -87,12 +89,13 @@ class RequestServiceTest {
     @Test
     @DisplayName("Get request by id. Request not exists.")
     void getRequestById_thenThrowResourceNotFound_whenRequestNotExists() {
+
         when(testProfileRepository.existsById(anyLong())).thenReturn(true);
         when(requestRepository.findByIdAndTestProfileId(anyLong(), anyLong()))
                 .thenReturn(Optional.empty());
 
-        ResourceNotFoundException ex = assertThrows(
-                ResourceNotFoundException.class,
+        ApplicationException ex = assertThrows(
+                ApplicationException.class,
                 () -> requestService.getRequestById(1L, 1L)
         );
 
@@ -103,6 +106,7 @@ class RequestServiceTest {
     @DisplayName("Get request by id. Ok")
     @MethodSource("com.pflb.springtest.argument.RequestServiceArgs#getRequestById_thenReturnDto")
     void getRequestById_thenReturnDto_whenExists(RequestDto requestDto, Request request) {
+
         when(testProfileRepository.existsById(anyLong())).thenReturn(true);
         when(requestRepository.findByIdAndTestProfileId(anyLong(), anyLong()))
                 .thenReturn(Optional.of(request));
@@ -115,7 +119,11 @@ class RequestServiceTest {
     @Test
     @DisplayName("Delete all from repo")
     void deleteAll() {
+
+        doNothing().when(requestRepository).deleteAll();
+
         requestService.deleteAll();
+
         verify(requestRepository).deleteAll();
     }
 
@@ -123,6 +131,7 @@ class RequestServiceTest {
     @DisplayName("Create. Ok")
     @MethodSource("com.pflb.springtest.argument.RequestServiceArgs#createRequest_thenReturnDto")
     void createRequest_thenReturnDto_whenValid(RequestDto requestDto, Request request) {
+
         when(modelMapper.map(eq(requestDto), eq(Request.class)))
                 .thenReturn(request);
         when(testProfileRepository.findById(1L))
@@ -142,8 +151,8 @@ class RequestServiceTest {
     void createRequest_thenThrowResourceNotFound_whenTestProfileNotFound() {
         when(testProfileRepository.findById(1L)).thenReturn(Optional.empty());
 
-        ResourceNotFoundException ex = assertThrows(
-                ResourceNotFoundException.class,
+        ApplicationException ex = assertThrows(
+                ApplicationException.class,
                 () -> requestService.createRequest(1L, new RequestDto())
         );
 
@@ -155,8 +164,8 @@ class RequestServiceTest {
     void createRequest_thenThrowResourceNotFound_whenRequestNotFound() {
         when(testProfileRepository.findById(1L)).thenReturn(Optional.empty());
 
-        ResourceNotFoundException ex = assertThrows(
-                ResourceNotFoundException.class,
+        ApplicationException ex = assertThrows(
+                ApplicationException.class,
                 () -> requestService.createRequest(1L, new RequestDto())
         );
 
@@ -185,11 +194,12 @@ class RequestServiceTest {
     @Test
     @DisplayName("Update. No test profile")
     void updateRequest_thenThrowResourseNotFound_whenRequestNotFound() {
+
         when(testProfileRepository.findById(1L)).thenReturn(Optional.of(new TestProfile()));
         when(requestRepository.existsById(1L)).thenReturn(false);
 
-        ResourceNotFoundException ex = assertThrows(
-                ResourceNotFoundException.class,
+        ApplicationException ex = assertThrows(
+                ApplicationException.class,
                 () -> requestService.updateRequest(1L, 1L, new RequestDto())
         );
 

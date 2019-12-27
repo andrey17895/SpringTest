@@ -28,6 +28,7 @@ class ListenerServiceTest {
     @ParameterizedTest
     @MethodSource("com.pflb.springtest.argument.ListenerServiceArgs#process")
     void process(HarDto harDto, TestProfile testProfileEntity) {
+
         listenerService.process(harDto);
 
         verify(

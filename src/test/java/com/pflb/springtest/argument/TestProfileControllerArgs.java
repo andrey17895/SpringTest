@@ -43,7 +43,8 @@ public class TestProfileControllerArgs {
     public static Stream<Arguments> putTestProfile_thenReturnErrorDto() {
         return Stream.of(
                 Arguments.of(
-                        ResourceProvider.getAsString("/testprofile/testprofile_minimal.json")
+                        ResourceProvider.getAsString("/testprofile/testprofile_minimal.json"),
+                        "Test Profile not found"
                 )
         );
     }

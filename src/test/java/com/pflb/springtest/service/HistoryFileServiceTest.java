@@ -47,6 +47,7 @@ public class HistoryFileServiceTest {
     @DisplayName("Processing file Ok")
     @MethodSource("com.pflb.springtest.argument.HistoryFileServiceArgs#processFile_thenReturnDto")
     public void processFile_thenReturnDto_whenValid(HistoryFileDto historyFileDto, HistoryFile historyFileEntity, MultipartFile multipartFile) {
+
         when(harParserService.parse(eq(multipartFile)))
                 .thenReturn(HarDtoProvider.dtoFromFile("/har/har_valid_minimal.json"));
         when(fileRepository.save(any(HistoryFile.class)))
@@ -63,6 +64,7 @@ public class HistoryFileServiceTest {
     @DisplayName("Get all files from repository")
     @MethodSource("com.pflb.springtest.argument.HistoryFileServiceArgs#getAllFiles_thenReturnDtoList")
     public void getAllFiles_thenReturnDtoList(List<HistoryFileDto> historyFileDtos, List<HistoryFile> historyFiles) {
+
         when(fileRepository.findAll()).thenReturn(historyFiles);
         when(mapper.map(any(), eq(new TypeToken<List<HistoryFileDto>>() {}.getType()))).thenReturn(historyFileDtos);
 
@@ -73,9 +75,11 @@ public class HistoryFileServiceTest {
     @Test
     @DisplayName("Delete all files in repository")
     public void deleteAllFiles() {
+
+        doNothing().when(fileRepository).deleteAll();
+
         historyFileServiceImpl.deleteAllFiles();
+
         verify(fileRepository, times(1)).deleteAll();
     }
-
-
 }

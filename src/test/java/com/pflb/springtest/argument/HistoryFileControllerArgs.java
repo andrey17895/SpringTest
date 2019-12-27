@@ -22,7 +22,7 @@ public class HistoryFileControllerArgs {
         return Stream.of(
                 Arguments.of(
                         "/har/har_invalid.json",
-                        "JSON_MAPPING_EXCEPTION"
+                        "Json mapping exception"
                 )
         );
     }

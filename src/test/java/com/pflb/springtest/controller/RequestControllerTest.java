@@ -1,6 +1,5 @@
 package com.pflb.springtest.controller;
 
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,12 +52,6 @@ class RequestControllerTest {
         mockMvc.perform(get("/testProfile/404/requests"))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.type").value(expectedType));
-    }
-
-    @Test
-    void deleteAll_thenReturnStatusOk() throws Exception {
-        mockMvc.perform(delete("/requests"))
-                .andExpect(status().isOk());
     }
 
     @ParameterizedTest

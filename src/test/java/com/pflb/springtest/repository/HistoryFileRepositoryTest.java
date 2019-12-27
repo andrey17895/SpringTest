@@ -22,8 +22,12 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @AutoConfigureTestDatabase(replace= Replace.NONE)
 @Disabled
 class HistoryFileRepositoryTest {
+    @Autowired
+    private HistoryFileRepository repository;
+
     @Test
     void save() {
+
         HistoryFile historyFile = HistoryFile.builder()
                 .id(null)
                 .name("Name")
@@ -32,12 +36,10 @@ class HistoryFileRepositoryTest {
                 .version("1.2")
                 .uploadTime(LocalDateTime.now())
                 .build();
+
         HistoryFile response = repository.save(historyFile);
+
         assertNotNull(response.getId());
     }
-
-
-    @Autowired
-    private HistoryFileRepository repository;
 
 }

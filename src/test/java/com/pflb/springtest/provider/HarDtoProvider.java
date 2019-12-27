@@ -22,7 +22,9 @@ public class HarDtoProvider {
     }
 
     public static MultipartFile multipartFile(String resource) throws IOException {
+
         InputStream inputFile = HarDtoProvider.class.getResourceAsStream(resource);
+
         return new MockMultipartFile("file", resource, "multipart/form-data", inputFile);
     }
 

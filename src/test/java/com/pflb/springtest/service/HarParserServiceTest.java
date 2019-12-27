@@ -36,6 +36,7 @@ class HarParserServiceTest {
     @MethodSource("com.pflb.springtest.argument.HapParserServiceArgs#parse_thenReturnDto")
     @DisplayName("Valid Har")
     void parse_thenReturnDto_whenValidJson(MultipartFile file, HarDto harDto) throws IOException {
+
         when(objectMapper.readValue(any(InputStream.class), eq(HarDto.class))).thenReturn(harDto);
 
         HarDto actualDto = harParserService.parse(file);
@@ -52,6 +53,7 @@ class HarParserServiceTest {
             Class<ApplicationException> exceptionClass,
             CustomExceptionType exceptionType
     ) throws IOException {
+
         when(objectMapper.readValue(any(InputStream.class), eq(HarDto.class))).thenThrow(mapperException);
 
         ApplicationException ex = assertThrows(

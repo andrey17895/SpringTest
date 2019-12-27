@@ -13,7 +13,8 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.core.Is.is;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -62,12 +63,6 @@ class FileUploadControllerTest {
     @Test
     void getFiles() throws Exception {
         mockMvc.perform(get("/uploadFile"))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    void deleteAll() throws Exception {
-        mockMvc.perform(delete("/uploadFile"))
                 .andExpect(status().isOk());
     }
 }

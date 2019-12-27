@@ -32,6 +32,7 @@ class RabbitJmsProducerTest {
         when(mqConsumerProperties.getQueueName()).thenReturn("queue");
 
         jmsProducer.sendMessage(HarDtoProvider.dtoFromFile("/har/har_valid_minimal.json"));
+
         verify(rabbitTemplate).convertAndSend(eq("queue"), any(HarDto.class));
     }
 }

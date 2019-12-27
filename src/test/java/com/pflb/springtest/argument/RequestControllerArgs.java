@@ -36,15 +36,15 @@ public class RequestControllerArgs {
     public static Stream<Arguments> getAllRequestsByTestProfileId_thenReturnErrorDto() {
         return Stream.of(
                 Arguments.of(
-                        "TEST_PROFILE_NOT_FOUND"
+                        "Test Profile not found"
                 )
         );
     }
 
     public static Stream<Arguments> getRequestById_thenReturnErrorDto() {
         return Stream.of(
-                Arguments.of(1, 404, "REQUEST_NOT_FOUND"),
-                Arguments.of(404, 1, "TEST_PROFILE_NOT_FOUND")
+                Arguments.of(1, 404, "Request not found"),
+                Arguments.of(404, 1, "Test Profile not found")
         );
     }
 
@@ -63,13 +63,13 @@ public class RequestControllerArgs {
                         1,
                         ResourceProvider.getAsString("/request/request_invalid.json"),
                         HttpStatus.BAD_REQUEST,
-                        CustomExceptionType.HTTP_MESSAGE_NOT_READABLE.toString()
+                        CustomExceptionType.HTTP_MESSAGE_NOT_READABLE.getMessage()
                 ),
                 Arguments.of(
                         404,
                         ResourceProvider.getAsString("/request/request_valid.json"),
                         HttpStatus.NOT_FOUND,
-                        CustomExceptionType.TEST_PROFILE_NOT_FOUND.toString()
+                        CustomExceptionType.TEST_PROFILE_NOT_FOUND.getMessage()
                 )
         );
     }
@@ -81,21 +81,21 @@ public class RequestControllerArgs {
                         1,
                         ResourceProvider.getAsString("/request/request_invalid.json"),
                         HttpStatus.BAD_REQUEST,
-                        CustomExceptionType.HTTP_MESSAGE_NOT_READABLE.toString()
+                        CustomExceptionType.HTTP_MESSAGE_NOT_READABLE.getMessage()
                 ),
                 Arguments.of(
                         404,
                         1,
                         ResourceProvider.getAsString("/request/request_valid.json"),
                         HttpStatus.NOT_FOUND,
-                        CustomExceptionType.TEST_PROFILE_NOT_FOUND.toString()
+                        CustomExceptionType.TEST_PROFILE_NOT_FOUND.getMessage()
                 ),
                 Arguments.of(
                         1,
                         404,
                         ResourceProvider.getAsString("/request/request_valid.json"),
                         HttpStatus.NOT_FOUND,
-                        CustomExceptionType.REQUEST_NOT_FOUND.toString()
+                        CustomExceptionType.REQUEST_NOT_FOUND.getMessage()
                 )
         );
     }

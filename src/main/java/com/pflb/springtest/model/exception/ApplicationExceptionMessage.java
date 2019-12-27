@@ -5,6 +5,6 @@ import lombok.Data;
 
 @Data
 @Builder
-public class ApplicationExceptionDto {
-    CustomExceptionType type;
+public class ApplicationExceptionMessage {
+    String type;
 }

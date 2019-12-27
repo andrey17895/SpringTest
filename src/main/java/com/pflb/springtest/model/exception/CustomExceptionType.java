@@ -15,4 +15,12 @@ public enum CustomExceptionType {
                 this.statusCode = statusCode;
                 this.message = message;
         }
+
+        public int getStatusCode() {
+                return statusCode;
+        }
+
+        public String getMessage() {
+                return message;
+        }
 }

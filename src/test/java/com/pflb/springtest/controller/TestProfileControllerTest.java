@@ -80,7 +80,7 @@ class TestProfileControllerTest {
     void getTestProfileById_thenReturnErrorDto_whenTestProfileNotExists() throws Exception {
         mockMvc.perform(get("/testProfile/404"))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.type", is("TEST_PROFILE_NOT_FOUND")));
+                .andExpect(jsonPath("$.type", is("Test Profile not found")));
     }
 
     @ParameterizedTest
@@ -96,20 +96,13 @@ class TestProfileControllerTest {
     @ParameterizedTest
     @MethodSource("com.pflb.springtest.argument.TestProfileControllerArgs#putTestProfile_thenReturnErrorDto")
     @Rollback
-    void putTestProfile_thenReturnErrorDto_whenTestProfileNotExists(String requestBody) throws Exception {
+    void putTestProfile_thenReturnErrorDto_whenTestProfileNotExists(String requestBody, String expectedExceptionType) throws Exception {
         mockMvc.perform(
                 put("/testProfile/4")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody)
         )
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.type", is("TEST_PROFILE_NOT_FOUND")));
-    }
-
-    @Test
-    @Rollback
-    void deleteAll() throws Exception {
-        mockMvc.perform(delete("/testProfile"))
-                .andExpect(status().isOk());
+                .andExpect(jsonPath("$.type", is(expectedExceptionType)));
     }
 }

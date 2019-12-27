@@ -2,8 +2,8 @@ package com.pflb.springtest.service.impl;
 
 import com.pflb.springtest.model.dto.profile.TestProfileDto;
 import com.pflb.springtest.model.entity.TestProfile;
+import com.pflb.springtest.model.exception.ApplicationException;
 import com.pflb.springtest.model.exception.CustomExceptionType;
-import com.pflb.springtest.model.exception.ResourceNotFoundException;
 import com.pflb.springtest.repository.TestProfileRepository;
 import com.pflb.springtest.service.ITestProfileService;
 import org.modelmapper.ModelMapper;
@@ -38,7 +38,7 @@ public class TestProfileService implements ITestProfileService {
     public TestProfileDto getTestProfileById(Long testProfileId) {
 
         TestProfile testProfile = testProfileRepository.findById(testProfileId)
-                .orElseThrow(()-> new ResourceNotFoundException(CustomExceptionType.TEST_PROFILE_NOT_FOUND, testProfileId));
+                .orElseThrow(()-> new ApplicationException(CustomExceptionType.TEST_PROFILE_NOT_FOUND));
 
         return modelMapper.map(testProfile, TestProfileDto.class);
     }
@@ -58,7 +58,7 @@ public class TestProfileService implements ITestProfileService {
     public TestProfileDto updateTestProfile(TestProfileDto newTestProfileDto, Long testProfileId) {
 
         if (!testProfileRepository.existsById(testProfileId)) {
-            throw new ResourceNotFoundException(CustomExceptionType.TEST_PROFILE_NOT_FOUND, testProfileId);
+            throw new ApplicationException(CustomExceptionType.TEST_PROFILE_NOT_FOUND);
         }
 
         TestProfile newTestProfile =  modelMapper.map(newTestProfileDto, TestProfile.class);

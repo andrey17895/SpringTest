@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pflb.springtest.model.dto.har.HarDto;
 import com.pflb.springtest.model.exception.ApplicationException;
 import com.pflb.springtest.model.exception.CustomExceptionType;
-import com.pflb.springtest.model.exception.JsonParsingException;
 import com.pflb.springtest.service.IParserService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,10 +32,10 @@ public class HarParserService implements IParserService {
             return objectMapper.readValue(file.getInputStream(), HarDto.class);
         } catch (JsonMappingException ex) {
             log.error("Invalid har structure", ex);
-            throw new JsonParsingException(CustomExceptionType.JSON_MAPPING_EXCEPTION);
+            throw new ApplicationException(CustomExceptionType.JSON_MAPPING_EXCEPTION);
         } catch (JsonProcessingException ex) {
             log.error("Har parsing error", ex);
-            throw new JsonParsingException(CustomExceptionType.JSON_PROCESSING_EXCEPTION);
+            throw new ApplicationException(CustomExceptionType.JSON_PROCESSING_EXCEPTION);
         } catch (IOException ex) {
             log.error("File exception", ex);
             throw new ApplicationException(CustomExceptionType.FILE_IO_EXCEPTION);

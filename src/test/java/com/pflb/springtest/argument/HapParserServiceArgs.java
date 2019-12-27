@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.pflb.springtest.model.exception.ApplicationException;
 import com.pflb.springtest.model.exception.CustomExceptionType;
-import com.pflb.springtest.model.exception.JsonParsingException;
 import com.pflb.springtest.provider.HarDtoProvider;
 import org.junit.jupiter.params.provider.Arguments;
 
@@ -17,13 +16,13 @@ public class HapParserServiceArgs {
                 Arguments.of(
                         HarDtoProvider.multipartFile("sintetic_good_get.json"),
                         JsonProcessingException.class,
-                        JsonParsingException.class,
+                        ApplicationException.class,
                         CustomExceptionType.JSON_PROCESSING_EXCEPTION
                 ),
                 Arguments.of(
                         HarDtoProvider.multipartFile("sintetic_good_get.json"),
                         JsonMappingException.class,
-                        JsonParsingException.class,
+                        ApplicationException.class,
                         CustomExceptionType.JSON_MAPPING_EXCEPTION
                 ),
                 Arguments.of(
