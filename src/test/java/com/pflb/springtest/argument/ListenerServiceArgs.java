@@ -10,7 +10,7 @@ public class ListenerServiceArgs {
     public static Stream<Arguments> process() {
         return Stream.of(
                 Arguments.of(
-                        HarDtoProvider.dtoFromFile("/har/har_valid_minimal.json"),
+                        HarDtoProvider.dto_minimal_valid(),
                         TestProfileProvider.entity(null)
                 )
         );

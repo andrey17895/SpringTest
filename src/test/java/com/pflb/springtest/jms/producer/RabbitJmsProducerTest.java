@@ -1,6 +1,6 @@
 package com.pflb.springtest.jms.producer;
 
-import com.pflb.springtest.configuration.MqConsumerProperties;
+import com.pflb.springtest.configuration.MqProducerProperties;
 import com.pflb.springtest.model.dto.har.HarDto;
 import com.pflb.springtest.provider.HarDtoProvider;
 import org.junit.jupiter.api.Test;
@@ -22,17 +22,26 @@ class RabbitJmsProducerTest {
     private RabbitTemplate rabbitTemplate;
 
     @Mock
-    private MqConsumerProperties mqConsumerProperties;
+    private MqProducerProperties mqProducerProperties;
 
     @InjectMocks
     private RabbitJmsProducer jmsProducer;
 
     @Test
     void sendMessage() {
-        when(mqConsumerProperties.getQueueName()).thenReturn("queue");
+        when(mqProducerProperties.getQueueName()).thenReturn("queue");
 
-        jmsProducer.sendMessage(HarDtoProvider.dtoFromFile("/har/har_valid_minimal.json"));
+        jmsProducer.sendMessage(HarDtoProvider.dto_minimal_valid());
 
         verify(rabbitTemplate).convertAndSend(eq("queue"), any(HarDto.class));
+    }
+
+    @Test
+    void deadQueueMessage() {
+        when(mqProducerProperties.getDeadQueueName()).thenReturn("deadQueue");
+
+        jmsProducer.sendDeadMessage(HarDtoProvider.dto_minimal_valid());
+
+        verify(rabbitTemplate).convertAndSend(eq("deadQueue"), any(HarDto.class));
     }
 }

@@ -12,7 +12,7 @@ public class HistoryFileProvider {
                 .browser(browser)
                 .name(harFile)
                 .version(version)
-                .content(HarDtoProvider.dtoFromFile("/har/har_valid_minimal.json"))
+                .content(HarDtoProvider.dto_minimal_valid())
                 .uploadTime(LocalDateTime.MIN)
                 .build();
     }
@@ -27,7 +27,7 @@ public class HistoryFileProvider {
                 .browser(browser)
                 .name(harFile)
                 .version(version)
-                .content(HarDtoProvider.dtoFromFile("/har/har_valid_minimal.json"))
+                .content(HarDtoProvider.dto_minimal_valid())
                 .uploadTime(LocalDateTime.MIN)
                 .build();
     }

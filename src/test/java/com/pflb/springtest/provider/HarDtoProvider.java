@@ -17,11 +17,19 @@ public class HarDtoProvider {
     private static ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
     @SneakyThrows
-    public static HarDto dtoFromFile(String resource) {
-        return mapper.readValue(HarDto.class.getResourceAsStream(resource), HarDto.class);
+    public static HarDto dto_good_har() {
+
+        return mapper.readValue(HarDto.class.getResourceAsStream("/har/sintetic_good_get.json"), HarDto.class);
     }
 
-    public static MultipartFile multipartFile(String resource) throws IOException {
+    @SneakyThrows
+    public static HarDto dto_minimal_valid() {
+
+        return mapper.readValue(HarDto.class.getResourceAsStream("/har/har_valid_minimal.json"), HarDto.class);
+    }
+    public static MultipartFile multipart_good_har() throws IOException {
+
+        String resource = "/har/sintetic_good_get.json";
 
         InputStream inputFile = HarDtoProvider.class.getResourceAsStream(resource);
 

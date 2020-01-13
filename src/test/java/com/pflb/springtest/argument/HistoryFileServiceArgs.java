@@ -40,8 +40,8 @@ public class HistoryFileServiceArgs {
                 Arguments.of(
                         HistoryFileProvider.dto("firefox", "1.2", "HarFile"),
                         HistoryFileProvider.entity(1L, "firefox", "1.2", "HarFile"),
-                        HarDtoProvider.multipartFile("/har/har_valid_minimal.json"),
-                        HarDtoProvider.dtoFromFile("/har/har_valid_minimal.json")
+                        HarDtoProvider.multipart_good_har(),
+                        HarDtoProvider.dto_minimal_valid()
                 )
         );
     }

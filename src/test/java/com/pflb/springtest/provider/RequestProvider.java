@@ -5,44 +5,58 @@ import com.pflb.springtest.model.entity.Request;
 import org.springframework.http.HttpMethod;
 
 import java.util.Collections;
-import java.util.Map;
 
 public class RequestProvider {
 
-    public static RequestDto dto(String body, Map<String, String> headers, Map<String, String> params, HttpMethod method, String url) {
+    public static RequestDto dto_yaru_get() {
         return RequestDto.builder()
-                .url(url)
-                .body(body)
-                .headers(headers)
-                .params(params)
-                .method(method)
+                .url("ya.ru")
+                .body(null)
+                .headers(Collections.emptyMap())
+                .params(Collections.emptyMap())
+                .method(HttpMethod.GET)
                 .build();
     }
 
-    public static RequestDto dto(String url) {
-        return dto("", Collections.emptyMap(), url);
+    public static RequestDto dto_boomqio_get() {
+        return RequestDto.builder()
+                .url("boomq.io")
+                .body(null)
+                .headers(Collections.emptyMap())
+                .params(Collections.emptyMap())
+                .method(HttpMethod.GET)
+                .build();
     }
-
-    public static RequestDto dto(String body, Map<String, String> params, String url) {
-        return dto(body, Collections.emptyMap(), params, HttpMethod.GET, url);
-    }
-
-    public static Request entity(Long id, String body, Map<String, String> headers, Map<String, String> params, HttpMethod method, String url) {
+    public static Request entity_yaru_get_id_1() {
         return Request.builder()
-                .id(id)
-                .url(url)
-                .body(body)
-                .headers(headers)
-                .params(params)
-                .method(method)
+                .id(1L)
+                .url("ya.ru")
+                .body(null)
+                .headers(Collections.emptyMap())
+                .params(Collections.emptyMap())
+                .method(HttpMethod.GET)
                 .build();
     }
 
-    public static Request entity(Long id, String body, Map<String, String> params, String url) {
-        return entity(id, body, Collections.emptyMap(), params, HttpMethod.GET, url);
+    public static Request entity_boomqio_get_id_2() {
+        return Request.builder()
+                .id(2L)
+                .url("boomqio")
+                .body(null)
+                .headers(Collections.emptyMap())
+                .params(Collections.emptyMap())
+                .method(HttpMethod.GET)
+                .build();
     }
 
-    public static Request entity(Long id, String url) {
-        return entity(id, null, Collections.emptyMap(), url);
+    public static Request entity_yaru_get_id_null() {
+        return Request.builder()
+                .id(null)
+                .url("ya.ru")
+                .body(null)
+                .headers(Collections.emptyMap())
+                .params(Collections.emptyMap())
+                .method(HttpMethod.GET)
+                .build();
     }
 }

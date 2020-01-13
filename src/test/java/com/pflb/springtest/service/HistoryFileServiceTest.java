@@ -49,7 +49,7 @@ public class HistoryFileServiceTest {
     public void processFile_thenReturnDto_whenValid(HistoryFileDto historyFileDto, HistoryFile historyFileEntity, MultipartFile multipartFile) {
 
         when(harParserService.parse(eq(multipartFile)))
-                .thenReturn(HarDtoProvider.dtoFromFile("/har/har_valid_minimal.json"));
+                .thenReturn(HarDtoProvider.dto_minimal_valid());
         when(fileRepository.save(any(HistoryFile.class)))
                 .thenReturn(historyFileEntity);
         when(mapper.map(eq(historyFileEntity), eq(HistoryFileDto.class))).thenReturn(historyFileDto);

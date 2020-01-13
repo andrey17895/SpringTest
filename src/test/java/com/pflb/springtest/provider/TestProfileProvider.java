@@ -20,7 +20,7 @@ public class TestProfileProvider {
     public static TestProfileDto dto() {
         return TestProfileDto.builder()
                 .requests(Collections.singletonList(
-                        RequestProvider.dto(null, Collections.emptyMap(), "ya.ru")
+                        RequestProvider.dto_yaru_get()
                 ))
                 .build();
     }
@@ -29,7 +29,7 @@ public class TestProfileProvider {
         return TestProfile.builder()
                 .id(id)
                 .requests(Collections.singletonList(
-                    RequestProvider.entity(id, null, Collections.emptyMap(), "ya.ru")
+                    RequestProvider.entity_yaru_get_id_null()
                 ))
                 .build();
     }

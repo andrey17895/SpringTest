@@ -4,6 +4,7 @@ springtest:
       queueName: "fileSend"
     producer:
       queueName: "fileSend"
+      deadQueueName: "har_dead_queue"
 
 spring:
   jpa:
@@ -18,7 +19,7 @@ spring:
     password: postgres
   liquibase:
     changelog: "classpath:db/db.changelog-master.yaml"
-    drop-first: false
+    drop-first: true
 
 management:
   endpoints:
@@ -26,14 +27,3 @@ management:
       exposure:
         include: prometheus,metrics
 
----
-spring:
-  profiles: test
-  datasource:
-    initialization-mode: always
-    platform: postgres
-    url: "jdbc:postgresql://localhost:5432/e2etest"
-    username: testuser
-    password: postgres
-  liquibase:
-    drop-first: true

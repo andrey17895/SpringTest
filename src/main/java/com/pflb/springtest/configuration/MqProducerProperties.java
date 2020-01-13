@@ -5,5 +5,5 @@ import lombok.Data;
 @Data
 public class MqProducerProperties {
     private String queueName;
-
+    private String deadQueueName;
 }

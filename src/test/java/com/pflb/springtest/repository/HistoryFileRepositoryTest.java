@@ -31,7 +31,7 @@ class HistoryFileRepositoryTest {
         HistoryFile historyFile = HistoryFile.builder()
                 .id(null)
                 .name("Name")
-                .content(HarDtoProvider.dtoFromFile("/har/har_valid_minimal.json"))
+                .content(HarDtoProvider.dto_minimal_valid())
                 .browser("browser")
                 .version("1.2")
                 .uploadTime(LocalDateTime.now())

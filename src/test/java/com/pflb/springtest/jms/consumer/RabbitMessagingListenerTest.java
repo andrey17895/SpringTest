@@ -22,7 +22,7 @@ class RabbitMessagingListenerTest {
 
     @Test
     void recieve() {
-        HarDto harDto = HarDtoProvider.dtoFromFile("/har/har_valid_minimal.json");
+        HarDto harDto = HarDtoProvider.dto_minimal_valid();
 
         listener.recieve(harDto);
 
