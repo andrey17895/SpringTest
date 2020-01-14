@@ -49,33 +49,4 @@ public class HistoryFileProvider {
                 .uploadTime(LocalDateTime.MIN)
                 .build();
     }
-
-//    public static HistoryFileDto dto(String browser, String version, String harFile) throws IOException {
-//        return HistoryFileDto.builder()
-//                .browser(browser)
-//                .name(harFile)
-//                .version(version)
-//                .content(HarDtoProvider.dto_valid_empty_body())
-//                .uploadTime(LocalDateTime.MIN)
-//                .build();
-//    }
-//
-//    public static HistoryFileDto dto() throws IOException {
-//        return dto("firefox", "1.2", "HarFile");
-//    }
-//
-//    public static HistoryFile entity(Long id, String browser, String version, String harFile) throws IOException {
-//        return HistoryFile.builder()
-//                .id(id)
-//                .browser(browser)
-//                .name(harFile)
-//                .version(version)
-//                .content(HarDtoProvider.dto_valid_empty_body())
-//                .uploadTime(LocalDateTime.MIN)
-//                .build();
-//    }
-//
-//    public static HistoryFile entity() throws IOException {
-//        return entity(null, "firefox", "1.2", "HarFile");
-//    }
 }
