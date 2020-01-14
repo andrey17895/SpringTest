@@ -20,6 +20,4 @@ public class RabbitMessagingListener {
     public void recieve(HarDto message) {
         listenerService.process(message);
     }
-
-
 }

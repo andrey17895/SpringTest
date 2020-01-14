@@ -10,6 +10,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 
+import java.io.IOException;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
@@ -28,20 +30,11 @@ class RabbitJmsProducerTest {
     private RabbitJmsProducer jmsProducer;
 
     @Test
-    void sendMessage() {
+    void sendMessage() throws IOException {
         when(mqProducerProperties.getQueueName()).thenReturn("queue");
 
-        jmsProducer.sendMessage(HarDtoProvider.dto_minimal_valid());
+        jmsProducer.sendMessage(HarDtoProvider.dto_valid_empty_body());
 
         verify(rabbitTemplate).convertAndSend(eq("queue"), any(HarDto.class));
-    }
-
-    @Test
-    void deadQueueMessage() {
-        when(mqProducerProperties.getDeadQueueName()).thenReturn("deadQueue");
-
-        jmsProducer.sendDeadMessage(HarDtoProvider.dto_minimal_valid());
-
-        verify(rabbitTemplate).convertAndSend(eq("deadQueue"), any(HarDto.class));
     }
 }

@@ -4,6 +4,7 @@ import com.pflb.springtest.jms.producer.JmsProducer;
 import com.pflb.springtest.model.dto.har.HarDto;
 import com.pflb.springtest.model.dto.profile.HistoryFileDto;
 import com.pflb.springtest.model.entity.HistoryFile;
+import com.pflb.springtest.model.exception.ApplicationException;
 import com.pflb.springtest.provider.HarDtoProvider;
 import com.pflb.springtest.repository.HistoryFileRepository;
 import com.pflb.springtest.service.impl.HistoryFileService;
@@ -19,9 +20,11 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -40,21 +43,38 @@ public class HistoryFileServiceTest {
     private IParserService harParserService;
 
     @InjectMocks
-    private HistoryFileService historyFileServiceImpl;
+    private HistoryFileService historyFileService;
 
+
+    @ParameterizedTest
+    @MethodSource("com.pflb.springtest.argument.HistoryFileServiceArgs#processFile_thenThrowException")
+    public void processFile_thenThrowException_whenInvalidHar(MultipartFile multipartFile,
+                                                              HarDto harDto,
+                                                              ApplicationException expectedException){
+
+        when(harParserService.parse(eq(multipartFile)))
+                .thenReturn(harDto);
+
+        ApplicationException actualException =
+                assertThrows(ApplicationException.class, () -> historyFileService.processFile(multipartFile));
+
+        assertEquals(expectedException, actualException);
+    }
 
     @ParameterizedTest
     @DisplayName("Processing file Ok")
     @MethodSource("com.pflb.springtest.argument.HistoryFileServiceArgs#processFile_thenReturnDto")
-    public void processFile_thenReturnDto_whenValid(HistoryFileDto historyFileDto, HistoryFile historyFileEntity, MultipartFile multipartFile) {
+    public void processFile_thenReturnDto_whenValid(HistoryFileDto historyFileDto,
+                                                    HistoryFile historyFileEntity,
+                                                    MultipartFile multipartFile) throws IOException {
 
         when(harParserService.parse(eq(multipartFile)))
-                .thenReturn(HarDtoProvider.dto_minimal_valid());
+                .thenReturn(HarDtoProvider.dto_valid_empty_body());
         when(fileRepository.save(any(HistoryFile.class)))
                 .thenReturn(historyFileEntity);
         when(mapper.map(eq(historyFileEntity), eq(HistoryFileDto.class))).thenReturn(historyFileDto);
 
-        HistoryFileDto actualDto = historyFileServiceImpl.processFile(multipartFile);
+        HistoryFileDto actualDto = historyFileService.processFile(multipartFile);
 
         assertEquals(historyFileDto, actualDto);
         verify(jmsProducer).sendMessage(any(HarDto.class));
@@ -68,7 +88,7 @@ public class HistoryFileServiceTest {
         when(fileRepository.findAll()).thenReturn(historyFiles);
         when(mapper.map(any(), eq(new TypeToken<List<HistoryFileDto>>() {}.getType()))).thenReturn(historyFileDtos);
 
-        List<HistoryFileDto> actualDtoList = historyFileServiceImpl.getAllFiles();
+        List<HistoryFileDto> actualDtoList = historyFileService.getAllFiles();
         assertEquals(historyFileDtos, actualDtoList);
     }
 
@@ -78,7 +98,7 @@ public class HistoryFileServiceTest {
 
         doNothing().when(fileRepository).deleteAll();
 
-        historyFileServiceImpl.deleteAllFiles();
+        historyFileService.deleteAllFiles();
 
         verify(fileRepository, times(1)).deleteAll();
     }

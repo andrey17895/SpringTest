@@ -14,19 +14,19 @@ public class HapParserServiceArgs {
     public static Stream<Arguments> parse_thenThrowApplicationException() throws IOException {
         return Stream.of(
                 Arguments.of(
-                        HarDtoProvider.multipart_good_har(),
+                        HarDtoProvider.multipart_valid_har(),
                         JsonProcessingException.class,
                         ApplicationException.class,
                         CustomExceptionType.JSON_PROCESSING_EXCEPTION
                 ),
                 Arguments.of(
-                        HarDtoProvider.multipart_good_har(),
+                        HarDtoProvider.multipart_valid_har(),
                         JsonMappingException.class,
                         ApplicationException.class,
                         CustomExceptionType.JSON_MAPPING_EXCEPTION
                 ),
                 Arguments.of(
-                        HarDtoProvider.multipart_good_har(),
+                        HarDtoProvider.multipart_valid_har(),
                         IOException.class,
                         ApplicationException.class,
                         CustomExceptionType.FILE_IO_EXCEPTION
@@ -37,7 +37,7 @@ public class HapParserServiceArgs {
     public static Stream<Arguments> parse_thenReturnDto() throws IOException {
         return Stream.of(
                 Arguments.of(
-                        HarDtoProvider.multipart_good_har(),
+                        HarDtoProvider.multipart_valid_har(),
                         HarDtoProvider.dto_good_har()
                 )
         );

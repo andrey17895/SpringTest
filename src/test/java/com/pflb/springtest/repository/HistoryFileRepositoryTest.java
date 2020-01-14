@@ -11,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -26,12 +27,12 @@ class HistoryFileRepositoryTest {
     private HistoryFileRepository repository;
 
     @Test
-    void save() {
+    void save() throws IOException {
 
         HistoryFile historyFile = HistoryFile.builder()
                 .id(null)
                 .name("Name")
-                .content(HarDtoProvider.dto_minimal_valid())
+                .content(HarDtoProvider.dto_valid_empty_body())
                 .browser("browser")
                 .version("1.2")
                 .uploadTime(LocalDateTime.now())

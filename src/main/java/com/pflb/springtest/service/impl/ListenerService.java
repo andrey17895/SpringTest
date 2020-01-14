@@ -32,24 +32,28 @@ public class ListenerService implements IListenerService {
 
     @Override
     public void process(HarDto message) {
-        TestProfile testProfile = new TestProfile();
+        try {
+            TestProfile testProfile = new TestProfile();
 
-        List<HarEntryDto> entries = message.getLog().getEntries();
+            List<HarEntryDto> entries = message.getLog().getEntries();
 
-        List<Request> requestEntities = entries.stream()
-                .map(entry -> {
-                    HarRequestDto harRequestDto = entry.getRequest();
-                    return Request.builder()
-                            .url(harRequestDto.getUrl())
-                            .body(harRequestDto.getPostData() != null ? harRequestDto.getPostData().getText() : null)
-                            .params(harRequestDto.getPostData() != null ? harRequestDto.getPostData().getParamsMap() : Collections.emptyMap())
-                            .headers(harRequestDto.getHeadersMap())
-                            .method(harRequestDto.getMethod())
-                            .testProfile(testProfile)
-                            .build();
-                }).collect(Collectors.toList());
-        testProfile.setRequests(requestEntities);
+            List<Request> requestEntities = entries.stream()
+                    .map(entry -> {
+                        HarRequestDto harRequestDto = entry.getRequest();
+                        return Request.builder()
+                                .url(harRequestDto.getUrl())
+                                .body(harRequestDto.getPostData() != null ? harRequestDto.getPostData().getText() : null)
+                                .params(harRequestDto.getPostData() != null ? harRequestDto.getPostData().getParamsMap() : Collections.emptyMap())
+                                .headers(harRequestDto.getHeadersMap())
+                                .method(harRequestDto.getMethod())
+                                .testProfile(testProfile)
+                                .build();
+                    }).collect(Collectors.toList());
+            testProfile.setRequests(requestEntities);
 
-        testProfileRepository.save(testProfile);
+            testProfileRepository.save(testProfile);
+        } catch (NullPointerException ex) {
+            log.error("Invalid message. Probably missed critical fields\n" + message.toString(), ex);
+        }
     }
 }

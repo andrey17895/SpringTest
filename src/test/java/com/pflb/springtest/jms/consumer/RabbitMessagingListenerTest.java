@@ -9,6 +9,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.io.IOException;
+
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
@@ -21,8 +23,8 @@ class RabbitMessagingListenerTest {
     private RabbitMessagingListener listener;
 
     @Test
-    void recieve() {
-        HarDto harDto = HarDtoProvider.dto_minimal_valid();
+    void recieve() throws IOException {
+        HarDto harDto = HarDtoProvider.dto_valid_empty_body();
 
         listener.recieve(harDto);
 

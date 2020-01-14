@@ -44,7 +44,7 @@
             <column name="test_profile_id" type="BIGINT"/>
             <column name="url" type="VARCHAR(2147483647)"/>
             <column name="body" type="TEXT"/>
-            <column name="method" type="VARCHAR(10)"/>
+            <column name="method" type="numeric"/>
             <column name="perc" type="numeric(2)"/>
         </createTable>
     </changeSet>

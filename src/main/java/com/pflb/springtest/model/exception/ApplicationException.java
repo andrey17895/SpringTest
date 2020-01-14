@@ -1,7 +1,9 @@
 package com.pflb.springtest.model.exception;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
+@EqualsAndHashCode(callSuper = false)
 public class ApplicationException extends RuntimeException {
 
     @Getter

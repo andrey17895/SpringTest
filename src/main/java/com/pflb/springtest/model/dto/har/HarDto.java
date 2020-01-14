@@ -1,12 +1,15 @@
 package com.pflb.springtest.model.dto.har;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
-@RequiredArgsConstructor
 @Builder
+@AllArgsConstructor
 @NoArgsConstructor
 public class HarDto {
-    @NonNull
+
     private HarLogDto log;
 }

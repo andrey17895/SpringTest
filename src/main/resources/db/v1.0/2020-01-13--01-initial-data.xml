@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet author="Balakirev Andrey" id="init-data-test-profile">
+
+        <loadUpdateData encoding="UTF-8"
+                        file="classpath:db/data/initial_data_test_profile.csv"
+                        onlyUpdate="true"
+                        primaryKey="id"
+                        quotchar="'"
+                        schemaName="public"
+                        separator=","
+                        tableName="test_profile">
+            <column name="id" type="numeric"/>
+        </loadUpdateData>
+
+        <loadUpdateData encoding="UTF-8"
+                        file="classpath:db/data/initial_data_request.csv"
+                        onlyUpdate="true"
+                        primaryKey="id"
+                        quotchar="'"
+                        schemaName="public"
+                        separator=","
+                        tableName="request">
+            <column name="id" type="numeric"/>
+            <column name="test_profile_id" type="numeric"/>
+            <column name="url" type="string"/>
+            <column name="body" type="string"/>
+            <column name="method" type="string"/>
+            <column name="perc" type="numeric"/>
+        </loadUpdateData>
+
+        <loadUpdateData encoding="UTF-8"
+                        file="classpath:db/data/initial_data_request_headers.csv"
+                        onlyUpdate="true"
+                        primaryKey="id"
+                        quotchar="'"
+                        schemaName="public"
+                        separator=","
+                        tableName="request_headers">
+            <column name="id" type="numeric"/>
+            <column name="request_id" type="numeric"/>
+            <column name="name" type="string"/>
+            <column name="value" type="string"/>
+        </loadUpdateData>
+
+        <loadUpdateData encoding="UTF-8"
+                        file="classpath:db/data/initial_data_request_params.csv"
+                        onlyUpdate="true"
+                        primaryKey="id"
+                        quotchar="'"
+                        schemaName="public"
+                        separator=","
+                        tableName="request_params">
+            <column name="id" type="numeric"/>
+            <column name="request_id" type="numeric"/>
+            <column name="name" type="string"/>
+            <column name="value" type="string"/>
+        </loadUpdateData>
+
+    </changeSet>
+
+</databaseChangeLog>

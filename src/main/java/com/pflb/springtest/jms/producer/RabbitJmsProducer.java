@@ -2,6 +2,9 @@ package com.pflb.springtest.jms.producer;
 
 import com.pflb.springtest.configuration.MqProducerProperties;
 import com.pflb.springtest.model.dto.har.HarDto;
+import com.pflb.springtest.model.exception.ApplicationException;
+import com.pflb.springtest.model.exception.CustomExceptionType;
+import org.springframework.amqp.AmqpException;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,10 +23,14 @@ public class RabbitJmsProducer implements JmsProducer {
     }
 
     public void sendMessage(HarDto message) {
-        rabbitTemplate.convertAndSend(properties.getQueueName(), message);
-    }
 
-    public void sendDeadMessage(HarDto message) {
-        rabbitTemplate.convertAndSend(properties.getDeadQueueName(), message);
+        try {
+
+            rabbitTemplate.convertAndSend(properties.getQueueName(), message);
+
+        } catch (AmqpException ex) {
+
+            throw new ApplicationException(CustomExceptionType.AMQP_PRODUCER_EXCEPTION);
+        }
     }
 }
