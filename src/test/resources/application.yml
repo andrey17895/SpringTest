@@ -14,7 +14,7 @@ spring:
   datasource:
     initialization-mode: always
     platform: postgres
-    url: "jdbc:postgresql://localhost:5432/testdb"
+    url: "jdbc:postgresql://localhost:5432/e2etest"
     username: testuser
     password: postgres
   liquibase:
@@ -26,4 +26,3 @@ management:
     web:
       exposure:
         include: prometheus,metrics
-

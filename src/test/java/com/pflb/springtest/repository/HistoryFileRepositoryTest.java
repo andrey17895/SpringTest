@@ -2,7 +2,6 @@ package com.pflb.springtest.repository;
 
 import com.pflb.springtest.model.entity.HistoryFile;
 import com.pflb.springtest.provider.HarDtoProvider;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @AutoConfigureTestDatabase(replace= Replace.NONE)
-@Disabled
 class HistoryFileRepositoryTest {
     @Autowired
     private HistoryFileRepository repository;

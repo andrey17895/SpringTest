@@ -95,7 +95,7 @@ class TestProfileControllerTest {
     @Rollback
     void putTestProfile_thenReturnErrorDto_whenTestProfileNotExists(String requestBody, String expectedExceptionType) throws Exception {
         mockMvc.perform(
-                put("/testProfile/4")
+                put("/testProfile/404")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody)
         )
