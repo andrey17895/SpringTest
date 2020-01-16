@@ -2,4 +2,4 @@ databaseChangeLog:
   - include:
       file: classpath:db/v1.0/2019-11-21--01-init-schema.xml
   - include:
-      file: classpath:db/v1.0/2020-01-13--01-initial-data.xml
+      file: classpath:db/v1.0/2020-01-13--02-initial-data.xml

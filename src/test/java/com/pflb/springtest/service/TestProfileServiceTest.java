@@ -106,7 +106,7 @@ class TestProfileServiceTest {
 
         ApplicationException ex = assertThrows(
                 ApplicationException.class,
-                ()->testProfileService.updateTestProfile(new TestProfileDto(), 1L)
+                () -> testProfileService.updateTestProfile(new TestProfileDto(), 1L)
         );
 
         assertEquals(CustomExceptionType.TEST_PROFILE_NOT_FOUND, ex.getType());

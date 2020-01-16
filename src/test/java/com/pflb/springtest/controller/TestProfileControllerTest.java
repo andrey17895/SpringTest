@@ -32,34 +32,41 @@ class TestProfileControllerTest {
     void postTestProfile_thenReturnDto_whenValid(String requestBody, String expectedResponseBody) throws Exception {
         mockMvc.perform(post("/testProfile").contentType(MediaType.APPLICATION_JSON).content(requestBody))
                 .andExpect(status().isOk())
-                .andExpect(content().string(expectedResponseBody));
+                .andExpect(content().json(expectedResponseBody));
     }
 
     @ParameterizedTest
     @MethodSource("com.pflb.springtest.argument.TestProfileControllerArgs#testProfile_thenReturnErrorDto")
     @Rollback
-    void postTestProfile_thenReturnErrorDto_whenInalid(String requestBody, String expectedResponseBody) throws Exception {
+    void postTestProfile_thenReturnErrorDto_whenInalid(String requestBody,
+                                                       String expectedResponseBody) throws Exception {
+
         mockMvc.perform(post("/testProfile").contentType(MediaType.APPLICATION_JSON).content(requestBody))
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string(expectedResponseBody));
+                .andExpect(content().json(expectedResponseBody));
     }
 
     @ParameterizedTest
     @MethodSource("com.pflb.springtest.argument.TestProfileControllerArgs#testProfile_thenReturnDto")
     @Rollback
-    void putTestProfile_thenReturnDto_whenTestProfileExistsAndRequestValid(String requestBody, String expectedResponseBody) throws Exception {
+    void putTestProfile_thenReturnDto_whenTestProfileExistsAndRequestValid(
+            String requestBody,
+            String expectedResponseBody
+    ) throws Exception {
+
         mockMvc.perform(put("/testProfile/1").contentType(MediaType.APPLICATION_JSON).content(requestBody))
                 .andExpect(status().isOk())
-                .andExpect(content().string(expectedResponseBody));
+                .andExpect(content().json(expectedResponseBody));
     }
 
     @ParameterizedTest
     @MethodSource("com.pflb.springtest.argument.TestProfileControllerArgs#testProfile_thenReturnErrorDto")
     @Rollback
-    void putTestProfile_thenReturnDto_whenTestProfileExistsAndRequestInalid(String requestBody, String expectedResponseBody) throws Exception {
+    void putTestProfile_thenReturnDto_whenTestProfileExistsAndRequestInalid(String requestBody,
+                                                                            String expectedResponseBody) throws Exception {
         mockMvc.perform(put("/testProfile/1").contentType(MediaType.APPLICATION_JSON).content(requestBody))
                 .andExpect(status().isBadRequest())
-                .andExpect(content().string(expectedResponseBody));
+                .andExpect(content().json(expectedResponseBody));
     }
 
     @ParameterizedTest
@@ -69,7 +76,7 @@ class TestProfileControllerTest {
         mockMvc.perform(get("/testProfile"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
-                .andExpect(content().string(expectedResponseBody));
+                .andExpect(content().json(expectedResponseBody));
     }
 
     @Test
@@ -87,18 +94,18 @@ class TestProfileControllerTest {
         mockMvc.perform(get("/testProfile/1"))
                 .andExpect(status().isOk())
                 .andDo(print())
-                .andExpect(content().string(expectedResponseBody));
+                .andExpect(content().json(expectedResponseBody));
     }
 
     @ParameterizedTest
     @MethodSource("com.pflb.springtest.argument.TestProfileControllerArgs#putTestProfile_thenReturnErrorDto")
     @Rollback
-    void putTestProfile_thenReturnErrorDto_whenTestProfileNotExists(String requestBody, String expectedExceptionType) throws Exception {
+    void putTestProfile_thenReturnErrorDto_whenTestProfileNotExists(String requestBody,
+                                                                    String expectedExceptionType) throws Exception {
         mockMvc.perform(
                 put("/testProfile/404")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(requestBody)
-        )
+                        .content(requestBody))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.type", is(expectedExceptionType)));
     }

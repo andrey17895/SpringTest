@@ -41,6 +41,7 @@ public class HistoryFileService implements IHistoryFileService {
     public HistoryFileDto processFile(MultipartFile file) {
 
         try {
+
             HarDto harDto = harParserService.parse(file);
             HistoryFile historyFile = HistoryFile.builder()
                     .name("HarFile")
@@ -55,8 +56,11 @@ public class HistoryFileService implements IHistoryFileService {
             jmsProducer.sendMessage(response.getContent());
 
             return mapper.map(response, HistoryFileDto.class);
+
         } catch (NullPointerException ex) {
+
             log.error("Null pointer exception while processing har file. Check uploaded file content", ex);
+
             throw new ApplicationException(CustomExceptionType.BAD_HAR_FILE);
         }
     }

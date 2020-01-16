@@ -62,7 +62,12 @@ class RequestControllerTest {
 
     @ParameterizedTest
     @MethodSource("com.pflb.springtest.argument.RequestControllerArgs#getRequestById_thenReturnErrorDto")
-    void getRequestById_thenReturnErrorDto_whenTestProfileExistsOrRequestNotExists(long testProfileId, long requestId, String expectedType) throws Exception {
+    void getRequestById_thenReturnErrorDto_whenTestProfileExistsOrRequestNotExists(
+            long testProfileId,
+            long requestId,
+            String expectedType
+    ) throws Exception {
+
         mockMvc.perform(get("/testProfile/{testProfileId}/requests/{requestsId}", testProfileId, requestId))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.type").value(expectedType));
@@ -71,7 +76,9 @@ class RequestControllerTest {
     @ParameterizedTest
     @MethodSource("com.pflb.springtest.argument.RequestControllerArgs#request_thenReturnDto")
     @Rollback
-    void postRequest_thenReturnDto_whenValid(String requestBody, String expectedResponseBody) throws Exception {
+    void postRequest_thenReturnDto_whenValid(String requestBody,
+                                             String expectedResponseBody) throws Exception {
+
         mockMvc.perform(post("/testProfile/1/requests").contentType(MediaType.APPLICATION_JSON).content(requestBody))
                 .andExpect(status().isOk())
                 .andDo(print())
@@ -81,7 +88,11 @@ class RequestControllerTest {
     @ParameterizedTest
     @MethodSource("com.pflb.springtest.argument.RequestControllerArgs#postRequest_thenReturnErrorDto")
     @Rollback
-    void postRequest_thenReturnErrorDto_whenInvalid(long testProfileId, String requestBody, HttpStatus expectedStatus, String expectedType) throws Exception {
+    void postRequest_thenReturnErrorDto_whenInvalid(long testProfileId,
+                                                    String requestBody,
+                                                    HttpStatus expectedStatus,
+                                                    String expectedType) throws Exception {
+
         mockMvc.perform(
                 post("/testProfile/{testProfileId}/requests", testProfileId)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -94,7 +105,8 @@ class RequestControllerTest {
     @ParameterizedTest
     @MethodSource("com.pflb.springtest.argument.RequestControllerArgs#request_thenReturnDto")
     @Rollback
-    void putRequest_thenReturnDto_whenValid(String requestBody, String expectedResponseBody) throws Exception {
+    void putRequest_thenReturnDto_whenValid(String requestBody,
+                                            String expectedResponseBody) throws Exception {
         mockMvc.perform(put("/testProfile/1/requests/1").contentType(MediaType.APPLICATION_JSON).content(requestBody))
                 .andExpect(status().isOk())
                 .andDo(print())
@@ -104,7 +116,11 @@ class RequestControllerTest {
     @ParameterizedTest
     @MethodSource("com.pflb.springtest.argument.RequestControllerArgs#putRequest_thenReturnErrorDto")
     @Rollback
-    void putRequest_thenReturnErrorDto_whenInvalid(long testProfileId, long requestId, String requestBody, HttpStatus expectedStatus, String expectedType) throws Exception {
+    void putRequest_thenReturnErrorDto_whenInvalid(long testProfileId,
+                                                   long requestId,
+                                                   String requestBody,
+                                                   HttpStatus expectedStatus,
+                                                   String expectedType) throws Exception {
         mockMvc.perform(
                 put("/testProfile/{testProfileId}/requests/{requestId}", testProfileId, requestId)
                         .contentType(MediaType.APPLICATION_JSON)

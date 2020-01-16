@@ -20,6 +20,12 @@ spring:
   liquibase:
     changelog: "classpath:db/db.changelog-master.yaml"
     drop-first: false
+  rabbitmq:
+    host: localhost
+    port: 5672
+    password: guest
+    username: guest
+
 
 management:
   endpoints:

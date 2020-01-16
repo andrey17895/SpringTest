@@ -1,34 +1,36 @@
 package com.pflb.springtest.argument;
 
 import com.pflb.springtest.model.exception.CustomExceptionType;
-import com.pflb.springtest.provider.ResourceProvider;
 import org.junit.jupiter.params.provider.Arguments;
 import org.springframework.http.HttpStatus;
+import org.springframework.util.ResourceUtils;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.stream.Stream;
 
 public class RequestControllerArgs {
 
-    public static Stream<Arguments> getAllRequests_thenReturnDtoList() {
+    public static Stream<Arguments> getAllRequests_thenReturnDtoList() throws IOException {
         return Stream.of(
                 Arguments.of(
-                        ResourceProvider.getAsString("/request/request_expected_all.json")
+                        new String(Files.readAllBytes(ResourceUtils.getFile("classpath:request/request_expected_all.json").toPath()))
                 )
         );
     }
 
-    public static Stream<Arguments> getRequestById_thenReturnDto() {
+    public static Stream<Arguments> getRequestById_thenReturnDto() throws IOException {
         return Stream.of(
                 Arguments.of(
-                        ResourceProvider.getAsString("/request/request_expected_single.json")
+                        new String(Files.readAllBytes(ResourceUtils.getFile("classpath:request/request_expected_single.json").toPath()))
                 )
         );
     }
 
-    public static Stream<Arguments> getAllRequestsByTestProfileId_thenReturnDtoList() {
+    public static Stream<Arguments> getAllRequestsByTestProfileId_thenReturnDtoList() throws IOException {
         return Stream.of(
                 Arguments.of(
-                        ResourceProvider.getAsString("/request/request_expected_by_testprofile.json")
+                        new String(Files.readAllBytes(ResourceUtils.getFile("classpath:request/request_expected_by_testprofile.json").toPath()))
                 )
         );
     }
@@ -48,52 +50,52 @@ public class RequestControllerArgs {
         );
     }
 
-    public static Stream<Arguments> request_thenReturnDto() {
+    public static Stream<Arguments> request_thenReturnDto() throws IOException {
         return Stream.of(
                 Arguments.of(
-                        ResourceProvider.getAsString("/request/request_valid.json"),
-                        ResourceProvider.getAsString("/request/request_expected_post.json")
+                        new String(Files.readAllBytes(ResourceUtils.getFile("classpath:request/request_valid.json").toPath())),
+                        new String(Files.readAllBytes(ResourceUtils.getFile("classpath:request/request_expected_post.json").toPath()))
                 )
         );
     }
 
-    public static Stream<Arguments> postRequest_thenReturnErrorDto() {
+    public static Stream<Arguments> postRequest_thenReturnErrorDto() throws IOException {
         return Stream.of(
                 Arguments.of(
                         1,
-                        ResourceProvider.getAsString("/request/request_invalid.json"),
+                        new String(Files.readAllBytes(ResourceUtils.getFile("classpath:request/request_invalid.json").toPath())),
                         HttpStatus.BAD_REQUEST,
                         CustomExceptionType.HTTP_MESSAGE_NOT_READABLE.getMessage()
                 ),
                 Arguments.of(
                         404,
-                        ResourceProvider.getAsString("/request/request_valid.json"),
+                        new String(Files.readAllBytes(ResourceUtils.getFile("classpath:request/request_valid.json").toPath())),
                         HttpStatus.NOT_FOUND,
                         CustomExceptionType.TEST_PROFILE_NOT_FOUND.getMessage()
                 )
         );
     }
 
-    public static Stream<Arguments> putRequest_thenReturnErrorDto() {
+    public static Stream<Arguments> putRequest_thenReturnErrorDto() throws IOException {
         return Stream.of(
                 Arguments.of(
                         1,
                         1,
-                        ResourceProvider.getAsString("/request/request_invalid.json"),
+                        new String(Files.readAllBytes(ResourceUtils.getFile("classpath:request/request_invalid.json").toPath())),
                         HttpStatus.BAD_REQUEST,
                         CustomExceptionType.HTTP_MESSAGE_NOT_READABLE.getMessage()
                 ),
                 Arguments.of(
                         404,
                         1,
-                        ResourceProvider.getAsString("/request/request_valid.json"),
+                        new String(Files.readAllBytes(ResourceUtils.getFile("classpath:request/request_valid.json").toPath())),
                         HttpStatus.NOT_FOUND,
                         CustomExceptionType.TEST_PROFILE_NOT_FOUND.getMessage()
                 ),
                 Arguments.of(
                         1,
                         404,
-                        ResourceProvider.getAsString("/request/request_valid.json"),
+                        new String(Files.readAllBytes(ResourceUtils.getFile("classpath:request/request_valid.json").toPath())),
                         HttpStatus.NOT_FOUND,
                         CustomExceptionType.REQUEST_NOT_FOUND.getMessage()
                 )

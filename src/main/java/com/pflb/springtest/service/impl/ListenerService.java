@@ -33,6 +33,7 @@ public class ListenerService implements IListenerService {
     @Override
     public void process(HarDto message) {
         try {
+
             TestProfile testProfile = new TestProfile();
 
             List<HarEntryDto> entries = message.getLog().getEntries();
@@ -52,7 +53,9 @@ public class ListenerService implements IListenerService {
             testProfile.setRequests(requestEntities);
 
             testProfileRepository.save(testProfile);
+
         } catch (NullPointerException ex) {
+
             log.error("Invalid message. Probably missed critical fields\n" + message.toString(), ex);
         }
     }

@@ -6,7 +6,7 @@
     <changeSet author="Balakirev Andrey" id="init-data-test-profile">
 
         <loadUpdateData encoding="UTF-8"
-                        file="classpath:db/data/initial_data_test_profile.csv"
+                        file="classpath:db/v1.0/data/initial_data_test_profile.csv"
                         onlyUpdate="true"
                         primaryKey="id"
                         quotchar="'"
@@ -17,7 +17,7 @@
         </loadUpdateData>
 
         <loadUpdateData encoding="UTF-8"
-                        file="classpath:db/data/initial_data_request.csv"
+                        file="classpath:db/v1.0/data/initial_data_request.csv"
                         onlyUpdate="true"
                         primaryKey="id"
                         quotchar="'"
@@ -33,7 +33,7 @@
         </loadUpdateData>
 
         <loadUpdateData encoding="UTF-8"
-                        file="classpath:db/data/initial_data_request_headers.csv"
+                        file="classpath:db/v1.0/data/initial_data_request_headers.csv"
                         onlyUpdate="true"
                         primaryKey="id"
                         quotchar="'"
@@ -47,7 +47,7 @@
         </loadUpdateData>
 
         <loadUpdateData encoding="UTF-8"
-                        file="classpath:db/data/initial_data_request_params.csv"
+                        file="classpath:db/v1.0/data/initial_data_request_params.csv"
                         onlyUpdate="true"
                         primaryKey="id"
                         quotchar="'"

@@ -41,9 +41,7 @@ class FileUploadControllerTest {
     @ParameterizedTest
     @MethodSource("com.pflb.springtest.argument.HistoryFileControllerArgs#uploadFile_thenReturnDto")
     @Rollback
-    void uploadFile_thenReturnDto_whenValid(String filePath) throws Exception {
-
-        MockMultipartFile file = new MockMultipartFile("file", this.getClass().getResourceAsStream(filePath));
+    void uploadFile_thenReturnDto_whenValid(MockMultipartFile file) throws Exception {
 
         doNothing().when(jmsProducer).sendMessage(any(HarDto.class));
 
@@ -59,8 +57,8 @@ class FileUploadControllerTest {
     @ParameterizedTest
     @MethodSource("com.pflb.springtest.argument.HistoryFileControllerArgs#uploadFile_thenReturnErrorDto")
     @Rollback
-    void uploadFile_thenReturnErrorDto_whenInvalid(String filePath, String expectedExceptionType) throws Exception {
-        MockMultipartFile file = new MockMultipartFile("file", this.getClass().getResourceAsStream(filePath));
+    void uploadFile_thenReturnErrorDto_whenInvalid( MockMultipartFile file,
+                                                    String expectedExceptionType) throws Exception {
 
         mockMvc.perform(
                 multipart("/uploadFile")

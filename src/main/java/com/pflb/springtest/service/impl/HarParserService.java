@@ -29,14 +29,21 @@ public class HarParserService implements IParserService {
     @Override
     public HarDto parse(MultipartFile file) {
         try {
+
             return objectMapper.readValue(file.getInputStream(), HarDto.class);
+
         } catch (JsonMappingException ex) {
+
             log.error("Invalid har structure", ex);
             throw new ApplicationException(CustomExceptionType.JSON_MAPPING_EXCEPTION);
+
         } catch (JsonProcessingException ex) {
+
             log.error("Har parsing error", ex);
             throw new ApplicationException(CustomExceptionType.JSON_PROCESSING_EXCEPTION);
+
         } catch (IOException ex) {
+
             log.error("File exception", ex);
             throw new ApplicationException(CustomExceptionType.FILE_IO_EXCEPTION);
         }

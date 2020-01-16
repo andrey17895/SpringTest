@@ -25,7 +25,10 @@ public class RequestService implements IRequestService {
     private ModelMapper modelMapper;
 
     @Autowired
-    public RequestService(RequestRepository requestRepository, TestProfileRepository testProfileRepository, ModelMapper modelMapper) {
+    public RequestService(RequestRepository requestRepository,
+                          TestProfileRepository testProfileRepository,
+                          ModelMapper modelMapper) {
+
         this.requestRepository = requestRepository;
         this.testProfileRepository = testProfileRepository;
         this.modelMapper = modelMapper;
@@ -58,10 +61,9 @@ public class RequestService implements IRequestService {
     }
 
     @Override
-    public RequestDto getRequestById(
-            Long testProfileId,
-            Long requestId
-    ) {
+    public RequestDto getRequestById(Long testProfileId,
+                                     Long requestId) {
+
         if (!testProfileRepository.existsById(testProfileId)) {
             throw new ApplicationException(CustomExceptionType.TEST_PROFILE_NOT_FOUND);
         }
@@ -73,10 +75,9 @@ public class RequestService implements IRequestService {
     }
 
     @Override
-    public RequestDto createRequest(
-            Long testProfileId,
-            RequestDto requestDto
-    ) {
+    public RequestDto createRequest(Long testProfileId,
+                                    RequestDto requestDto) {
+
         TestProfile testProfile = testProfileRepository.findById(testProfileId)
                 .orElseThrow(() -> new ApplicationException(CustomExceptionType.TEST_PROFILE_NOT_FOUND));
 
@@ -87,11 +88,10 @@ public class RequestService implements IRequestService {
     }
 
     @Override
-    public RequestDto updateRequest(
-            Long testProfileId,
-            Long requestId,
-            RequestDto newRequestDto
-    ) {
+    public RequestDto updateRequest(Long testProfileId,
+                                    Long requestId,
+                                    RequestDto newRequestDto) {
+
         TestProfile testProfile = testProfileRepository.findById(testProfileId)
                 .orElseThrow(() -> new ApplicationException(CustomExceptionType.TEST_PROFILE_NOT_FOUND));
 
