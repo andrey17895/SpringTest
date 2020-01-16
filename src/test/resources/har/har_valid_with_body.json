@@ -1,0 +1,33 @@
+{
+  "log": {
+    "version": "1.2",
+    "creator": {
+      "name": "Firefox",
+      "version": "68.0.1"
+    },
+    "browser": {
+      "name": "Firefox",
+      "version": "68.0.1"
+    },
+    "entries": [
+      {
+        "pageref": "page_1",
+        "startedDateTime": "2019-11-11T16:16:41.749+03:00",
+        "request": {
+          "bodySize": 0,
+          "method": "POST",
+          "postData": {
+            "mimeType": "text/plain;charset=UTF-8",
+            "params": [],
+            "text": "body_text"
+          },
+          "url": "ya.ru",
+          "httpVersion": "HTTP/1.1",
+          "headers": [],
+          "queryString": [],
+          "headersSize": 650
+        }
+      }
+    ]
+  }
+}

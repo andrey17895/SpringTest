@@ -13,7 +13,7 @@ public class TestProfileServiceArgs {
         return Stream.of(
                 Arguments.of(
                         Collections.singletonList(TestProfileProvider.dto()),
-                        Collections.singletonList(TestProfileProvider.entity(1L))
+                        Collections.singletonList(TestProfileProvider.entity_id_1())
                 ),
                 Arguments.of(
                         Arrays.asList(
@@ -21,8 +21,8 @@ public class TestProfileServiceArgs {
                                 TestProfileProvider.dto()
                         ),
                         Arrays.asList(
-                                TestProfileProvider.entity(1L),
-                                TestProfileProvider.entity(2L)
+                                TestProfileProvider.entity_id_1(),
+                                TestProfileProvider.entity_id_2()
                         )
                 )
         );
@@ -32,7 +32,7 @@ public class TestProfileServiceArgs {
         return Stream.of(
                 Arguments.of(
                         TestProfileProvider.dto(),
-                        TestProfileProvider.entity(1L)
+                        TestProfileProvider.entity_id_1()
                 )
         );
     }
@@ -40,7 +40,7 @@ public class TestProfileServiceArgs {
         return Stream.of(
                 Arguments.of(
                         TestProfileProvider.dto(),
-                        TestProfileProvider.entity(1L)
+                        TestProfileProvider.entity_id_1()
                 )
         );
     }
@@ -48,7 +48,7 @@ public class TestProfileServiceArgs {
         return Stream.of(
                 Arguments.of(
                         TestProfileProvider.dto(),
-                        TestProfileProvider.entity(1L)
+                        TestProfileProvider.entity_id_1()
                 )
         );
     }

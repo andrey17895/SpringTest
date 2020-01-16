@@ -47,13 +47,19 @@ public class HistoryFileServiceArgs {
         );
     }
 
-    private static Stream<Arguments> processFile_thenReturnDto() throws IOException {
+        private static Stream<Arguments> processFile_thenReturnDto() throws IOException {
         return Stream.of(
                 Arguments.of(
                         HistoryFileProvider.dto_firefox_v1_2(),
                         HistoryFileProvider.entity_firefox_v1_2_id_1(),
                         HarDtoProvider.multipart_valid_har(),
                         HarDtoProvider.dto_valid_empty_body()
+                ),
+                Arguments.of(
+                        HistoryFileProvider.dto_valid_without_browser(),
+                        HistoryFileProvider.entity_valid_without_browser(),
+                        HarDtoProvider.multipart_valid_without_browser(),
+                        HarDtoProvider.dto_valid_without_browser()
                 )
         );
     }

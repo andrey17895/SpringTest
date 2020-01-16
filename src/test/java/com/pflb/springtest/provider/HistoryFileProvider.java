@@ -49,4 +49,25 @@ public class HistoryFileProvider {
                 .uploadTime(LocalDateTime.MIN)
                 .build();
     }
+
+    public static HistoryFileDto dto_valid_without_browser() throws IOException {
+        return HistoryFileDto.builder()
+                .browser(null)
+                .name("HarFile")
+                .version("1.2")
+                .content(HarDtoProvider.dto_valid_without_browser())
+                .uploadTime(LocalDateTime.MIN)
+                .build();
+    }
+
+    public static HistoryFile entity_valid_without_browser() throws IOException {
+        return HistoryFile.builder()
+                .id(1L)
+                .browser(null)
+                .name("HarFile")
+                .version("1.2")
+                .content(HarDtoProvider.dto_valid_without_browser())
+                .uploadTime(LocalDateTime.MIN)
+                .build();
+    }
 }

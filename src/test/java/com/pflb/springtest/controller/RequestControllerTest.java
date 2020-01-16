@@ -1,10 +1,13 @@
 package com.pflb.springtest.controller;
 
+import com.pflb.springtest.service.impl.RequestService;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.Rollback;
@@ -12,6 +15,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -24,6 +28,9 @@ class RequestControllerTest {
 
     @Autowired
     MockMvc mockMvc;
+
+    @SpyBean
+    RequestService requestService;
 
     @ParameterizedTest
     @MethodSource("com.pflb.springtest.argument.RequestControllerArgs#getAllRequests_thenReturnDtoList")
@@ -128,5 +135,13 @@ class RequestControllerTest {
                 )
                 .andExpect(status().is(expectedStatus.value()))
                 .andExpect(jsonPath("$.type").value(expectedType));
+    }
+
+    @Test
+    @Rollback
+    void deleteAll() throws Exception {
+        doNothing().when(requestService).deleteAll();
+
+        mockMvc.perform(delete("/requests")).andExpect(status().isOk());
     }
 }

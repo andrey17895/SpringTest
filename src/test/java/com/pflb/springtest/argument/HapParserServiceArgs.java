@@ -38,7 +38,7 @@ public class HapParserServiceArgs {
         return Stream.of(
                 Arguments.of(
                         HarDtoProvider.multipart_valid_har(),
-                        HarDtoProvider.dto_good_har()
+                        HarDtoProvider.dto_valid_har()
                 )
         );
     }

@@ -16,11 +16,36 @@ public class TestProfileProvider {
                 .build();
     }
 
-    public static TestProfile entity(Long id) {
+    public static TestProfile entity_id_null() {
         return TestProfile.builder()
-                .id(id)
+                .id(null)
                 .requests(Collections.singletonList(
                     RequestProvider.entity_yaru_get_id_null()
+                ))
+                .build();
+    }
+    public static TestProfile entity_id_1() {
+        return TestProfile.builder()
+                .id(1L)
+                .requests(Collections.singletonList(
+                    RequestProvider.entity_yaru_get_id_null()
+                ))
+                .build();
+    }
+    public static TestProfile entity_id_2() {
+        return TestProfile.builder()
+                .id(2L)
+                .requests(Collections.singletonList(
+                    RequestProvider.entity_yaru_get_id_null()
+                ))
+                .build();
+    }
+
+    public static TestProfile entity_valid_post_with_body() {
+        return TestProfile.builder()
+                .id(null)
+                .requests(Collections.singletonList(
+                    RequestProvider.entity_valid_post_with_body()
                 ))
                 .build();
     }

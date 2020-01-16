@@ -6,6 +6,8 @@ import com.pflb.springtest.model.dto.har.HarEntryDto;
 import com.pflb.springtest.model.dto.har.HarRequestDto;
 import com.pflb.springtest.model.entity.Request;
 import com.pflb.springtest.model.entity.TestProfile;
+import com.pflb.springtest.model.exception.ApplicationException;
+import com.pflb.springtest.model.exception.CustomExceptionType;
 import com.pflb.springtest.repository.TestProfileRepository;
 import com.pflb.springtest.service.IListenerService;
 import lombok.extern.log4j.Log4j2;
@@ -57,6 +59,7 @@ public class ListenerService implements IListenerService {
         } catch (NullPointerException ex) {
 
             log.error("Invalid message. Probably missed critical fields\n" + message.toString(), ex);
+            throw new ApplicationException(CustomExceptionType.BAD_HAR_FILE);
         }
     }
 }

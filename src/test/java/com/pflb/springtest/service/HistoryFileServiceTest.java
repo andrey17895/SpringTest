@@ -5,7 +5,6 @@ import com.pflb.springtest.model.dto.har.HarDto;
 import com.pflb.springtest.model.dto.profile.HistoryFileDto;
 import com.pflb.springtest.model.entity.HistoryFile;
 import com.pflb.springtest.model.exception.ApplicationException;
-import com.pflb.springtest.provider.HarDtoProvider;
 import com.pflb.springtest.repository.HistoryFileRepository;
 import com.pflb.springtest.service.impl.HistoryFileService;
 import org.junit.jupiter.api.DisplayName;
@@ -20,7 +19,6 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -66,10 +64,11 @@ public class HistoryFileServiceTest {
     @MethodSource("com.pflb.springtest.argument.HistoryFileServiceArgs#processFile_thenReturnDto")
     public void processFile_thenReturnDto_whenValid(HistoryFileDto historyFileDto,
                                                     HistoryFile historyFileEntity,
-                                                    MultipartFile multipartFile) throws IOException {
+                                                    MultipartFile multipartFile,
+                                                    HarDto harDto){
 
         when(harParserService.parse(eq(multipartFile)))
-                .thenReturn(HarDtoProvider.dto_valid_empty_body());
+                .thenReturn(harDto);
         when(fileRepository.save(any(HistoryFile.class)))
                 .thenReturn(historyFileEntity);
         when(mapper.map(eq(historyFileEntity), eq(HistoryFileDto.class))).thenReturn(historyFileDto);

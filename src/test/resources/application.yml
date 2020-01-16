@@ -22,7 +22,7 @@ spring:
     drop-first: true
   rabbitmq:
     host: localhost
-    port: 5672
+    port: 15672
     password: guest
     username: guest
 

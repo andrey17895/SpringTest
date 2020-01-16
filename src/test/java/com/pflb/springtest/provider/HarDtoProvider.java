@@ -15,14 +15,31 @@ public class HarDtoProvider {
 
     private static ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-    public static HarDto dto_good_har() throws IOException {
+    public static HarDto dto_valid_har() throws IOException {
 
         return mapper.readValue(HarDto.class.getResourceAsStream("/har/sintetic_good_get.json"), HarDto.class);
+    }
+
+    public static HarDto dto_valid_with_body() throws IOException {
+
+        return mapper.readValue(HarDto.class.getResourceAsStream("/har/har_valid_with_body.json"), HarDto.class);
     }
 
     public static HarDto dto_valid_empty_body() throws IOException {
 
         return mapper.readValue(HarDto.class.getResourceAsStream("/har/har_valid_minimal.json"), HarDto.class);
+    }
+
+    public static HarDto dto_valid_without_browser() throws IOException {
+
+        return mapper.readValue(HarDto.class.getResourceAsStream("/har/har_valid_without_browser.json"), HarDto.class);
+    }
+
+    public static MultipartFile multipart_valid_without_browser() throws IOException {
+
+        InputStream inputFile = HarDtoProvider.class.getResourceAsStream("/har/har_valid_without_browser.json");
+
+        return new MockMultipartFile("file", "/har/har_valid_without_browser.json", "multipart/form-data", inputFile);
     }
 
     public static HarDto dto_invalid_no_log(){
@@ -31,20 +48,17 @@ public class HarDtoProvider {
     }
 
     public static MultipartFile multipart_invalid_no_log() throws IOException {
-        String resource = "/har/invalid_har_no_log.har";
 
-        InputStream inputFile = HarDtoProvider.class.getResourceAsStream(resource);
+        InputStream inputFile = HarDtoProvider.class.getResourceAsStream("/har/invalid_har_no_log.har");
 
-        return new MockMultipartFile("file", resource, "multipart/form-data", inputFile);
+        return new MockMultipartFile("file", "/har/invalid_har_no_log.har", "multipart/form-data", inputFile);
     }
 
     public static MultipartFile multipart_valid_har() throws IOException {
 
-        String resource = "/har/sintetic_good_get.json";
+        InputStream inputFile = HarDtoProvider.class.getResourceAsStream("/har/sintetic_good_get.json");
 
-        InputStream inputFile = HarDtoProvider.class.getResourceAsStream(resource);
-
-        return new MockMultipartFile("file", resource, "multipart/form-data", inputFile);
+        return new MockMultipartFile("file", "/har/sintetic_good_get.json", "multipart/form-data", inputFile);
     }
 
 }

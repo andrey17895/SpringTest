@@ -59,4 +59,15 @@ public class RequestProvider {
                 .method(HttpMethod.GET)
                 .build();
     }
+
+    public static Request entity_valid_post_with_body() {
+        return Request.builder()
+                .id(null)
+                .url("ya.ru")
+                .body("body_text")
+                .headers(Collections.emptyMap())
+                .params(Collections.emptyMap())
+                .method(HttpMethod.POST)
+                .build();
+    }
 }
